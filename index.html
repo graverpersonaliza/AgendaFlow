@@ -1,0 +1,473 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{font-family:var(--font-sans);background:var(--color-background-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;min-height:610px;position:relative}
+.hd{height:52px;background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary);padding:0 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:15px;font-weight:600;color:var(--color-text-primary)}.logo em{color:#1D9E75;font-style:normal}
+.tabc{display:flex;background:var(--color-background-secondary);border-radius:8px;padding:3px;gap:2px}
+.tab{padding:6px 16px;font-size:12px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:var(--color-text-secondary)}
+.tab.on{background:var(--color-background-primary);color:#1D9E75}
+/* Client view */
+.ca{padding:18px}
+.cc{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:18px;max-width:520px;margin:0 auto}
+.cnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cml{font-size:15px;font-weight:600;color:var(--color-text-primary)}
+.cnbs{display:flex;gap:4px}
+.cnb{width:30px;height:30px;border:0.5px solid var(--color-border-tertiary);border-radius:8px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--color-text-secondary);font-size:14px}
+.cnb:hover{background:var(--color-background-secondary)}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.dlbl{text-align:center;font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--color-text-tertiary);padding:0 0 10px;text-transform:uppercase}
+.dlbl.we{color:#1D9E75}
+.dc{height:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;position:relative;gap:2px}
+.dc .n{font-size:13px;line-height:1;color:var(--color-text-tertiary)}
+.dc .bd{width:4px;height:4px;border-radius:50%;background:#9FE1CB}
+.dc.ot .n{opacity:.18}
+.dc.past .n{opacity:.28}
+.dc.bzy{opacity:.35;cursor:not-allowed}
+.dc.avl{cursor:pointer}
+.dc.avl .n{color:var(--color-text-primary);font-weight:600}
+.dc.avl:hover{background:#E1F5EE}.dc.avl:hover .n{color:#0F6E56}
+.dc.tday:not(.bzy) .n{color:#1D9E75;font-weight:800}
+.lgnd{display:flex;gap:14px;margin-top:14px;flex-wrap:wrap;justify-content:center}
+.li{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--color-text-secondary)}
+.ld{width:9px;height:9px;border-radius:50%}
+.hintcard{max-width:520px;margin:14px auto 0;text-align:center;font-size:12px;color:var(--color-text-secondary);background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:10px}
+/* ===== MODAL — explicit colors, guaranteed contrast ===== */
+.mov{position:fixed;inset:0;background:rgba(10,20,18,0.62);display:flex;align-items:center;justify-content:center;z-index:999;padding:16px;backdrop-filter:blur(2px)}
+.mbox{background:#FFFFFF;border-radius:18px;width:420px;max-width:94vw;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.35);border:1px solid #E3E8E6}
+.mhead{background:#1D9E75;padding:18px 20px;border-radius:18px 18px 0 0;position:relative}
+.mhead .mxb{position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.22);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px}
+.mhead .mxb:hover{background:rgba(255,255,255,.35)}
+.mhead-t{color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.steps5{display:flex;align-items:center}
+.s5{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.s5dot{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);color:rgba(255,255,255,.7);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.s5.dn .s5dot{background:#fff;border-color:#fff;color:#1D9E75}
+.s5.act .s5dot{background:rgba(255,255,255,.3);border-color:#fff;color:#fff}
+.s5lbl{font-size:8px;color:rgba(255,255,255,.65);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.s5.dn .s5lbl,.s5.act .s5lbl{color:#fff}
+.s5line{flex:0 0 auto;width:100%;height:2px;background:rgba(255,255,255,.25);margin-top:-16px}
+.s5line.on{background:#fff}
+.mbody{padding:20px;color:#1A2E29}
+.minfo{background:#EAF8F1;border:1px solid #BFE9D7;border-radius:12px;padding:13px 14px;margin-bottom:16px}
+.minfo-t{font-size:14px;font-weight:700;color:#0F6E56;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.minfo-r{display:flex;justify-content:space-between;font-size:12px;color:#1D9E75;margin-top:3px}
+.minfo-r b{color:#0F6E56}
+.slbl2{font-size:11px;font-weight:700;color:#5C6E69;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.sg2{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+.st2{padding:11px 4px;border:1.5px solid #E3E8E6;border-radius:10px;font-size:13px;cursor:pointer;text-align:center;color:#3A4A46;background:#fff;font-weight:700}
+.st2:hover:not(.tk2){border-color:#1D9E75;background:#EAF8F1;color:#0F6E56}
+.st2.on2{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.st2.tk2{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.svc2{padding:13px 14px;border:1.5px solid #E3E8E6;border-radius:12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;background:#fff}
+.svc2:hover{border-color:#1D9E75;background:#EAF8F1}
+.svc2-n{font-size:14px;font-weight:700;color:#1A2E29}
+.svc2-m{font-size:11px;color:#6B7C77;margin-top:3px}
+.svc2-p{font-size:16px;font-weight:700;color:#1D9E75;margin-left:10px}
+.fg2{margin-bottom:13px}
+.fg2 label{font-size:10px;font-weight:700;color:#5C6E69;display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.fg2 input,.fg2 textarea,.fg2 select{width:100%;padding:11px 12px;border:1.5px solid #E3E8E6;border-radius:10px;font-size:14px;background:#fff;color:#1A2E29;font-family:inherit}
+.fg2 input:focus,.fg2 textarea:focus,.fg2 select:focus{outline:none;border-color:#1D9E75}
+.frow2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btnpx{width:100%;padding:14px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:14px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+.btnpx:hover{background:#0F6E56}
+.btngx{width:100%;padding:11px;background:#fff;color:#5C6E69;border:1.5px solid #E3E8E6;border-radius:12px;font-size:13px;cursor:pointer;margin-top:8px;font-weight:600}
+.btngx:hover{background:#F4F6F5}
+.popts2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.popt2{border:2px solid #E3E8E6;border-radius:12px;padding:13px 10px;cursor:pointer;text-align:center}
+.popt2:hover{border-color:#9FE1CB}
+.popt2.on2{border-color:#1D9E75;background:#EAF8F1}
+.ptit2{font-size:11px;font-weight:700;color:#1A2E29}
+.pval2{font-size:20px;font-weight:800;color:#1D9E75;margin:5px 0 2px}
+.phin2{font-size:10px;color:#6B7C77;line-height:1.3}
+.pixb2{background:#EAF8F1;border:1px solid #BFE9D7;border-radius:12px;padding:18px;text-align:center;margin-bottom:14px}
+.pixqr2{width:96px;height:96px;background:#fff;border-radius:10px;margin:10px auto;display:flex;align-items:center;justify-content:center;border:1px solid #BFE9D7}
+.pixamt2{font-size:24px;font-weight:800;color:#0F6E56}
+.pixlb2{font-size:11px;color:#1D9E75;margin-top:2px}
+.pixk2{font-size:12px;background:#fff;padding:8px;border-radius:10px;border:1px solid #BFE9D7;color:#0F6E56;margin-top:10px;cursor:pointer;font-weight:600}
+.pixk2:hover{background:#F4FFF9}
+.totalrow{display:flex;justify-content:space-between;font-size:15px;font-weight:800;padding:12px 0;border-top:2px solid #EFF3F1;margin-bottom:4px;color:#1A2E29}
+.totalrow span:last-child{color:#1D9E75}
+.cof2{text-align:center;padding:6px 0}
+.cof2-ico{width:68px;height:68px;background:#EAF8F1;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#1D9E75;font-size:30px}
+.cof2-tt{font-size:19px;font-weight:800;color:#1A2E29;margin-bottom:8px}
+.cof2-tx{font-size:13px;color:#6B7C77;margin-bottom:18px;line-height:1.5}
+.cof2-crd{background:#F4F6F5;border-radius:12px;padding:14px;text-align:left;margin-bottom:16px}
+.cr2{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;color:#6B7C77;border-bottom:1px solid #E3E8E6}
+.cr2:last-child{border-bottom:none}
+.cr2 b{color:#1A2E29;font-weight:700}
+.errbox{background:#FCEBEB;border:1px solid #F09595;color:#A32D2D;border-radius:10px;padding:10px 12px;font-size:12px;margin-bottom:14px;font-weight:600}
+/* Admin */
+.adm{padding:18px}
+.astrow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.ast{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:13px;position:relative;overflow:hidden}
+.ast::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#1D9E75}
+.ast .av{font-size:23px;font-weight:700;color:var(--color-text-primary);margin-top:6px}
+.ast .al{font-size:11px;color:var(--color-text-secondary)}
+.a2c{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.acd{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:15px}
+.acd h3{font-size:10px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.aitem{padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;justify-content:space-between;align-items:center}
+.aitem:last-of-type{border-bottom:none}
+.ain{font-size:13px;font-weight:600;color:var(--color-text-primary)}
+.aim{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.aibtns{display:flex;gap:5px}
+.aibb{padding:0 10px;height:28px;border:0.5px solid var(--color-border-tertiary);border-radius:8px;background:var(--color-background-primary);cursor:pointer;display:flex;align-items:center;gap:5px;color:var(--color-text-secondary);font-size:11px;font-weight:600}
+.aibb:hover{background:#EAF8F1;color:#0F6E56;border-color:#9FE1CB}
+.aibb.dl:hover{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
+.addb{width:100%;padding:10px;margin-top:10px;border:1.5px dashed var(--color-border-secondary);border-radius:10px;background:transparent;cursor:pointer;font-size:12px;color:var(--color-text-secondary);font-weight:700}
+.addb:hover{border-color:#1D9E75;color:#1D9E75;background:#EAF8F1}
+.atable{width:100%;border-collapse:collapse;font-size:12px}
+.atable th{font-size:10px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:7px 10px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+.atable td{padding:9px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.atable tr:last-child td{border-bottom:none}
+.bdg{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.bge{background:#EAF8F1;color:#0F6E56}.bga{background:#FAEEDA;color:#7A4A05}
+.dwbtn{width:30px;height:30px;border-radius:50%;font-size:10px;font-weight:700;border:0.5px solid var(--color-border-tertiary);cursor:pointer}
+</style>
+
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">AgendaFlow — Sistema de Agendamento Universal</h2>
+<div class="app" id="app">
+  <header class="hd">
+    <span class="logo">Agenda<em>Flow</em></span>
+    <div class="tabc">
+      <button class="tab on" id="t1" onclick="setV('client')"><i class="ti ti-calendar" aria-hidden="true"></i> Agendar</button>
+      <button class="tab" id="t2" onclick="setV('admin')"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Admin</button>
+    </div>
+  </header>
+  <div id="mc"></div>
+  <div id="ml"></div>
+</div>
+
+<script>
+const T=new Date();
+const MNS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const WDS=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const WDSFULL=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const SLS=['08:00','09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00','18:00'];
+
+function dstr(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
+function dimonth(m,y){return new Date(y,m+1,0).getDate();}
+function fday(m,y){return new Date(y,m,1).getDay();}
+function rdate(n){const d=new Date(T);d.setDate(d.getDate()+n);return dstr(d.getFullYear(),d.getMonth(),d.getDate());}
+function tstr(){return dstr(T.getFullYear(),T.getMonth(),T.getDate());}
+
+const V={
+  view:'client', m:T.getMonth(), y:T.getFullYear(), nid:300,
+  workDays:[0,1,1,1,1,1,1], // todos os dias ativos exceto domingo, por padrão
+  svcs:[
+    {id:1,n:'Corte de Cabelo',d:30,p:60,pm:'partial'},
+    {id:2,n:'Consulta Médica',d:60,p:200,pm:'full'},
+    {id:3,n:'Massagem Relaxante',d:90,p:150,pm:'partial'},
+    {id:4,n:'Manicure',d:45,p:45,pm:'none'},
+  ],
+  bks:[
+    {id:1,dt:rdate(2),sl:'09:00',nm:'Maria Silva',cpf:'123.456.789-00',ct:'(11)99999-1111',si:1,pd:true},
+    {id:2,dt:rdate(2),sl:'11:00',nm:'João Costa',cpf:'987.654.321-00',ct:'(11)88888-2222',si:2,pd:false},
+    {id:3,dt:rdate(4),sl:'14:00',nm:'Ana Lima',cpf:'111.222.333-44',ct:'(11)77777-3333',si:3,pd:true},
+    {id:4,dt:rdate(8),sl:'10:00',nm:'Pedro Santos',cpf:'555.666.777-88',ct:'(11)66666-4444',si:1,pd:false},
+  ]
+};
+let BK={open:false,step:1,date:null,slot:null,svcId:null,nm:'',cpf:'',wh:'',em:'',obs:'',pay:'partial',paidAmt:0,err:''};
+let ED={mode:null,id:null,err:''};
+
+function bksOn(dt){return V.bks.filter(b=>b.dt===dt);}
+
+function setV(v){
+  V.view=v;
+  document.getElementById('t1').className='tab'+(v==='client'?' on':'');
+  document.getElementById('t2').className='tab'+(v==='admin'?' on':'');
+  render();
+}
+function render(){document.getElementById('mc').innerHTML = V.view==='client' ? rclient() : radmin();}
+
+/* ===================== CALENDAR ===================== */
+function rclient(){
+  const m=V.m,y=V.y,sd=fday(m,y),nd=dimonth(m,y),pdm=dimonth(m===0?11:m-1,m===0?y-1:y),tds=tstr();
+  const lbls=WDS.map((w,i)=>'<div class="dlbl'+(i===0||i===6?' we':'')+'">'+w+'</div>').join('');
+  let cells='';
+  for(let i=0;i<sd;i++) cells+='<div class="dc ot"><span class="n">'+(pdm-sd+i+1)+'</span></div>';
+  for(let d=1;d<=nd;d++){
+    const dtx=dstr(y,m,d), dow=new Date(y,m,d).getDay(), cnt=bksOn(dtx).length;
+    const past=dtx<tds, closed=V.workDays[dow]===0, full=cnt>=8, isTod=dtx===tds;
+    let c='dc';
+    if(past) c+=' past';
+    else if(closed||full) c+=' bzy';
+    else c+=' avl';
+    if(isTod&&!past) c+=' tday';
+    const ck = (!past && !closed && !full) ? ' onclick="openBooking(\''+dtx+'\')"' : '';
+    cells += '<div class="'+c+'"'+ck+'><span class="n">'+d+'</span>'+(cnt>0&&!past?'<span class="bd"></span>':'')+'</div>';
+  }
+  const tot=sd+nd, tr=tot%7===0?0:7-(tot%7);
+  for(let t=1;t<=tr;t++) cells+='<div class="dc ot"><span class="n">'+t+'</span></div>';
+  return '<div class="ca"><div class="cc">'+
+    '<div class="cnav"><span class="cml">'+MNS[m]+' '+y+'</span><div class="cnbs">'+
+    '<button class="cnb" onclick="chM(-1)"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>'+
+    '<button class="cnb" onclick="chM(1)"><i class="ti ti-chevron-right" aria-hidden="true"></i></button></div></div>'+
+    '<div class="cgrid">'+lbls+cells+'</div></div>'+
+    '<div class="lgnd">'+
+      '<div class="li"><div class="ld" style="background:#1D9E75"></div>Disponível</div>'+
+      '<div class="li"><div class="ld" style="background:#9FE1CB"></div>Com agendamentos</div>'+
+      '<div class="li"><div class="ld" style="background:#C7D1CD"></div>Indisponível / cheio</div>'+
+    '</div>'+
+    '<div class="hintcard"><i class="ti ti-hand-click" aria-hidden="true"></i> Clique em qualquer dia disponível (todos os dias da semana habilitados pelo admin aparecem clicáveis) para abrir a janela de agendamento.</div>'+
+  '</div>';
+}
+function chM(d){V.m+=d;if(V.m>11){V.m=0;V.y++;}if(V.m<0){V.m=11;V.y--;}render();}
+
+/* ===================== BOOKING MODAL (visível, central, alto contraste) ===================== */
+function openBooking(dateStr){
+  BK={open:true,step:1,date:dateStr,slot:null,svcId:null,nm:'',cpf:'',wh:'',em:'',obs:'',pay:'partial',paidAmt:0,err:''};
+  renderBK();
+}
+function closeBK(){BK.open=false;document.getElementById('ml').innerHTML='';}
+function fmtDateLong(ds){
+  const p=ds.split('-'); const dt=new Date(+p[0],+p[1]-1,+p[2]);
+  return dt.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+}
+function stepDots(){
+  const labels=['Horário','Serviço','Dados','Pagamento','Pronto'];
+  let html='<div class="steps5">';
+  for(let i=1;i<=5;i++){
+    const cls = i<BK.step?'s5 dn':i===BK.step?'s5 act':'s5';
+    html += '<div class="'+cls+'"><div class="s5dot">'+(i<BK.step?'<i class=\"ti ti-check\" aria-hidden=\"true\"></i>':i)+'</div><span class="s5lbl">'+labels[i-1]+'</span></div>';
+    if(i<5) html += '<div class="s5line'+(i<BK.step?' on':'')+'"></div>';
+  }
+  html+='</div>';
+  return html;
+}
+function renderBK(){
+  if(!BK.open) return;
+  const dl=fmtDateLong(BK.date);
+  let body='';
+  if(BK.step===1) body=bkStep1(dl);
+  else if(BK.step===2) body=bkStep2();
+  else if(BK.step===3) body=bkStep3();
+  else if(BK.step===4) body=bkStep4();
+  else body=bkStep5(dl);
+  document.getElementById('ml').innerHTML =
+    '<div class="mov" onclick="if(event.target===this)closeBK()"><div class="mbox">'+
+      '<div class="mhead"><button class="mxb" onclick="closeBK()"><i class="ti ti-x" aria-hidden="true"></i></button>'+
+      '<div class="mhead-t"><i class="ti ti-calendar-event" aria-hidden="true"></i> Novo Agendamento</div>'+
+      stepDots()+
+      '</div><div class="mbody">'+body+'</div>'+
+    '</div></div>';
+}
+function bkStep1(dl){
+  const taken=bksOn(BK.date).map(b=>b.sl);
+  const slots=SLS.map(s=>{
+    const tk=taken.includes(s), on=s===BK.slot;
+    const cls='st2'+(tk?' tk2':'')+(on?' on2':'');
+    const cl = tk?'':' onclick="pickSlot(\''+s+'\')"';
+    return '<div class="'+cls+'"'+cl+'>'+s+'</div>';
+  }).join('');
+  return '<div class="minfo"><div class="minfo-t" style="text-transform:capitalize"><i class="ti ti-calendar" aria-hidden="true"></i> '+dl+'</div></div>'+
+    '<div class="slbl2">Escolha o horário</div><div class="sg2">'+slots+'</div>'+
+    (BK.err?'<div class="errbox">'+BK.err+'</div>':'')+
+    '<button class="btnpx" onclick="bkNext1()">Continuar <i class="ti ti-arrow-right" aria-hidden="true"></i></button>';
+}
+function pickSlot(s){BK.slot=s;BK.err='';renderBK();}
+function bkNext1(){ if(!BK.slot){BK.err='Selecione um horário para continuar.';renderBK();return;} BK.step=2; renderBK(); }
+
+function bkStep2(){
+  const cards=V.svcs.map(sv=>{
+    const pmTxt = sv.pm==='none'?'Pagamento no dia':sv.pm==='full'?'100% antecipado via Pix':'40% antecipado via Pix';
+    return '<div class="svc2" onclick="pickSvc('+sv.id+')">'+
+      '<div><div class="svc2-n">'+sv.n+'</div><div class="svc2-m"><i class="ti ti-clock" aria-hidden="true"></i> '+sv.d+' min · '+pmTxt+'</div></div>'+
+      '<div class="svc2-p">R$ '+sv.p.toFixed(2)+'</div></div>';
+  }).join('');
+  return '<div class="slbl2">Escolha o serviço</div>'+cards+
+    '<button class="btngx" onclick="bkBack(1)">Voltar</button>';
+}
+function pickSvc(id){BK.svcId=id;BK.step=3;renderBK();}
+
+function bkStep3(){
+  return '<div class="frow2">'+
+    '<div class="fg2"><label>Nome completo</label><input id="bkn" value="'+BK.nm+'" placeholder="Maria da Silva"/></div>'+
+    '<div class="fg2"><label>CPF</label><input id="bkc" value="'+BK.cpf+'" placeholder="000.000.000-00" maxlength="14" oninput="fCpf(this)"/></div>'+
+    '</div>'+
+    '<div class="frow2">'+
+    '<div class="fg2"><label>WhatsApp</label><input id="bkw" value="'+BK.wh+'" placeholder="(11) 99999-9999" maxlength="16" oninput="fPh(this)"/></div>'+
+    '<div class="fg2"><label>E-mail</label><input id="bke" value="'+BK.em+'" placeholder="nome@email.com" type="email"/></div>'+
+    '</div>'+
+    '<div class="fg2"><label>Observações (opcional)</label><textarea id="bko" rows="2" placeholder="Preferências ou anotações...">'+BK.obs+'</textarea></div>'+
+    (BK.err?'<div class="errbox">'+BK.err+'</div>':'')+
+    '<button class="btnpx" onclick="bkNext3()">Continuar <i class="ti ti-arrow-right" aria-hidden="true"></i></button>'+
+    '<button class="btngx" onclick="bkBack(2)">Voltar</button>';
+}
+function bkNext3(){
+  const nm=document.getElementById('bkn').value.trim();
+  const cpf=document.getElementById('bkc').value.trim();
+  const wh=document.getElementById('bkw').value.trim();
+  if(!nm||!cpf||!wh){BK.err='Preencha nome, CPF e WhatsApp para continuar.';renderBK();return;}
+  BK.nm=nm;BK.cpf=cpf;BK.wh=wh;BK.em=document.getElementById('bke').value.trim();BK.obs=document.getElementById('bko').value.trim();BK.err='';
+  BK.step=4; renderBK();
+}
+
+function bkStep4(){
+  const sv=V.svcs.find(x=>x.id===BK.svcId);
+  if(sv.pm==='none'){
+    return '<div class="errbox" style="background:#F4F6F5;border-color:#E3E8E6;color:#5C6E69"><i class="ti ti-info-circle" aria-hidden="true"></i> Este serviço não exige pagamento antecipado. O valor será cobrado no dia do atendimento.</div>'+
+      '<div class="totalrow"><span>A pagar agora</span><span>R$ 0,00</span></div>'+
+      '<button class="btnpx" onclick="bkConfirmPay(0)">Confirmar agendamento <i class="ti ti-check" aria-hidden="true"></i></button>'+
+      '<button class="btngx" onclick="bkBack(3)">Voltar</button>';
+  }
+  if(sv.pm==='full'){
+    return pixBlock(sv.p.toFixed(2), sv.n)+
+      '<div class="totalrow"><span>Total via Pix</span><span>R$ '+sv.p.toFixed(2)+'</span></div>'+
+      '<button class="btnpx" onclick="bkConfirmPay('+sv.p+')">Confirmei o pagamento <i class="ti ti-check" aria-hidden="true"></i></button>'+
+      '<button class="btngx" onclick="bkBack(3)">Voltar</button>';
+  }
+  const pt=(sv.p*0.4), ft=sv.p, amt=BK.pay==='full'?ft:pt;
+  return '<div class="popts2">'+
+    '<div class="popt2'+(BK.pay==='partial'?' on2':'')+'" onclick="bkPay(\'partial\')"><div class="ptit2">40% agora</div><div class="pval2">R$ '+pt.toFixed(2)+'</div><div class="phin2">+ R$ '+(sv.p*0.6).toFixed(2)+' no dia</div></div>'+
+    '<div class="popt2'+(BK.pay==='full'?' on2':'')+'" onclick="bkPay(\'full\')"><div class="ptit2">100% agora</div><div class="pval2">R$ '+ft.toFixed(2)+'</div><div class="phin2">Nada a pagar no dia</div></div>'+
+    '</div>'+
+    pixBlock(amt.toFixed(2), sv.n)+
+    '<div class="totalrow"><span>A pagar via Pix</span><span>R$ '+amt.toFixed(2)+'</span></div>'+
+    '<button class="btnpx" onclick="bkConfirmPay('+amt+')">Confirmei o pagamento <i class="ti ti-check" aria-hidden="true"></i></button>'+
+    '<button class="btngx" onclick="bkBack(3)">Voltar</button>';
+}
+function bkPay(opt){BK.pay=opt;renderBK();}
+function pixBlock(amt,lbl){
+  let rects='';
+  for(let i=0;i<24;i++){ if(Math.random()>0.42) rects+='<rect x="'+(28+(i%5)*8)+'" y="'+(28+Math.floor(i/5)*8)+'" width="7" height="7" fill="#0F6E56" rx="1"/>'; }
+  const qr='<svg width="88" height="88" viewBox="0 0 84 84" xmlns="http://www.w3.org/2000/svg"><rect width="84" height="84" fill="white" rx="4"/>'+
+    '<rect x="2" y="2" width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2.5" rx="2"/><rect x="7" y="7" width="12" height="12" fill="#0F6E56" rx="1"/>'+
+    '<rect x="60" y="2" width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2.5" rx="2"/><rect x="65" y="7" width="12" height="12" fill="#0F6E56" rx="1"/>'+
+    '<rect x="2" y="60" width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2.5" rx="2"/><rect x="7" y="65" width="12" height="12" fill="#0F6E56" rx="1"/>'+
+    rects+'</svg>';
+  return '<div class="pixb2"><div style="font-size:12px;font-weight:700;color:#0F6E56"><i class="ti ti-qrcode" aria-hidden="true"></i> Pague via Pix</div>'+
+    '<div class="pixqr2">'+qr+'</div><div class="pixamt2">R$ '+amt+'</div><div class="pixlb2">'+lbl+'</div>'+
+    '<div class="pixk2" onclick="alert(\'Chave copiada: agenda.flow@pix.com.br\')"><i class="ti ti-copy" aria-hidden="true"></i> agenda.flow@pix.com.br</div></div>';
+}
+function bkConfirmPay(amt){
+  BK.paidAmt=amt;
+  V.bks.push({id:V.nid++,dt:BK.date,sl:BK.slot,nm:BK.nm,cpf:BK.cpf,ct:BK.wh,si:BK.svcId,pd:amt>0});
+  BK.step=5; renderBK();
+}
+function bkStep5(dl){
+  const sv=V.svcs.find(x=>x.id===BK.svcId);
+  return '<div class="cof2"><div class="cof2-ico"><i class="ti ti-check" aria-hidden="true"></i></div>'+
+    '<div class="cof2-tt">Agendamento confirmado!</div>'+
+    '<div class="cof2-tx">Você receberá a confirmação pelo WhatsApp informado. Até breve!</div>'+
+    '<div class="cof2-crd">'+
+      '<div class="cr2"><span>Serviço</span><b>'+sv.n+'</b></div>'+
+      '<div class="cr2"><span>Data</span><b style="text-transform:capitalize">'+dl+'</b></div>'+
+      '<div class="cr2"><span>Horário</span><b>'+BK.slot+'</b></div>'+
+      '<div class="cr2"><span>Nome</span><b>'+BK.nm+'</b></div>'+
+      '<div class="cr2"><span>CPF</span><b>'+BK.cpf+'</b></div>'+
+      '<div class="cr2"><span>Pagamento</span><b>'+(BK.paidAmt>0?'R$ '+BK.paidAmt.toFixed(2)+' via Pix':'No dia do atendimento')+'</b></div>'+
+    '</div>'+
+    '<button class="btnpx" onclick="closeBK();render()">Concluir</button></div>';
+}
+function bkBack(s){BK.step=s;BK.err='';renderBK();}
+
+/* ===================== ADMIN ===================== */
+function radmin(){
+  const tot=V.bks.length, pd=V.bks.filter(b=>b.pd).length, pend=tot-pd;
+  const rev=V.bks.filter(b=>b.pd).reduce((s,b)=>{const sv=V.svcs.find(x=>x.id===b.si);return s+(sv?sv.p*(sv.pm==='full'?1:0.4):0);},0);
+  const svcRows=V.svcs.map(sv=>{
+    const pmTxt = sv.pm==='none'?'Sem antecipação':sv.pm==='full'?'100% via Pix':'40% via Pix';
+    return '<div class="aitem"><div><div class="ain">'+sv.n+'</div><div class="aim">'+sv.d+' min · R$ '+sv.p.toFixed(2)+' · '+pmTxt+'</div></div>'+
+      '<div class="aibtns"><button class="aibb" onclick="openEditService('+sv.id+')"><i class="ti ti-pencil" aria-hidden="true"></i> Editar</button>'+
+      '<button class="aibb dl" onclick="deleteService('+sv.id+')"><i class="ti ti-trash" aria-hidden="true"></i></button></div></div>';
+  }).join('');
+  const bkRows=V.bks.slice().reverse().map(b=>{
+    const sv=V.svcs.find(x=>x.id===b.si);
+    const p=b.dt.split('-'); const dt=new Date(+p[0],+p[1]-1,+p[2]);
+    return '<tr><td>'+dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})+'</td><td><strong>'+b.nm.split(' ')[0]+'</strong></td><td>'+(sv?sv.n:'—')+'</td><td>'+b.sl+'</td><td>'+(b.pd?'<span class="bdg bge">Pago</span>':'<span class="bdg bga">Pendente</span>')+'</td></tr>';
+  }).join('');
+  const dayToggles = WDS.map((w,i)=>{
+    const on=V.workDays[i]===1;
+    return '<button class="dwbtn" onclick="toggleWorkDay('+i+')" style="background:'+(on?'#1D9E75':'var(--color-background-secondary)')+';color:'+(on?'#fff':'var(--color-text-secondary)')+'">'+w.slice(0,1)+'</button>';
+  }).join('');
+  return '<div class="adm">'+
+    '<div class="astrow">'+
+      '<div class="ast"><div class="al"><i class="ti ti-calendar" aria-hidden="true"></i> Total agendados</div><div class="av">'+tot+'</div></div>'+
+      '<div class="ast"><div class="al"><i class="ti ti-check" aria-hidden="true"></i> Confirmados</div><div class="av">'+pd+'</div></div>'+
+      '<div class="ast"><div class="al"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes</div><div class="av">'+pend+'</div></div>'+
+      '<div class="ast"><div class="al"><i class="ti ti-currency-dollar" aria-hidden="true"></i> Recebido Pix</div><div class="av">R$ '+Math.round(rev)+'</div></div>'+
+    '</div>'+
+    '<div class="a2c">'+
+      '<div class="acd"><h3>Serviços cadastrados</h3>'+svcRows+
+        '<button class="addb" onclick="openAddService()"><i class="ti ti-plus" aria-hidden="true"></i> Adicionar serviço</button></div>'+
+      '<div class="acd"><h3>Agendamentos recentes</h3>'+
+        '<table class="atable"><thead><tr><th>Data</th><th>Cliente</th><th>Serviço</th><th>Hora</th><th>Status</th></tr></thead><tbody>'+bkRows+'</tbody></table></div>'+
+    '</div>'+
+    '<div class="a2c">'+
+      '<div class="acd"><h3>Dias de funcionamento</h3>'+
+        '<p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px">Clique para ativar/desativar — afeta diretamente o calendário do cliente.</p>'+
+        '<div style="display:flex;gap:6px">'+dayToggles+'</div>'+
+        '<div class="fg2" style="margin-top:14px"><label>Abertura</label><input type="time" value="08:00"/></div>'+
+        '<div class="fg2"><label>Fechamento</label><input type="time" value="18:00"/></div>'+
+        '<button class="btnpx" onclick="alert(\'Horário salvo!\')">Salvar horário</button></div>'+
+      '<div class="acd"><h3>Dados do negócio</h3>'+
+        '<div class="fg2"><label>Nome do negócio</label><input value="Meu Negócio"/></div>'+
+        '<div class="fg2"><label>Chave Pix</label><input value="agenda.flow@pix.com.br"/></div>'+
+        '<div class="fg2"><label>Intervalo entre horários</label><select><option>30 min</option><option selected>60 min</option></select></div>'+
+        '<button class="btnpx" onclick="alert(\'Dados salvos!\')">Salvar dados</button></div>'+
+    '</div>'+
+  '</div>';
+}
+function toggleWorkDay(i){ V.workDays[i] = V.workDays[i]===1 ? 0 : 1; render(); }
+
+/* ---- Service add/edit modal (mesmo estilo de alto contraste) ---- */
+function openAddService(){ ED={mode:'add',id:null,err:''}; renderED(); }
+function openEditService(id){
+  const sv=V.svcs.find(x=>x.id===id);
+  ED={mode:'edit',id:id,n:sv.n,d:sv.d,p:sv.p,pm:sv.pm,err:''};
+  renderED();
+}
+function closeED(){ document.getElementById('ml').innerHTML=''; }
+function renderED(){
+  const isEdit = ED.mode==='edit';
+  const n=isEdit?ED.n:'', d=isEdit?ED.d:60, p=isEdit?ED.p:100, pm=isEdit?ED.pm:'partial';
+  document.getElementById('ml').innerHTML =
+    '<div class="mov" onclick="if(event.target===this)closeED()"><div class="mbox">'+
+      '<div class="mhead"><button class="mxb" onclick="closeED()"><i class="ti ti-x" aria-hidden="true"></i></button>'+
+      '<div class="mhead-t"><i class="ti ti-'+(isEdit?'pencil':'plus')+'" aria-hidden="true"></i> '+(isEdit?'Editar serviço':'Novo serviço')+'</div></div>'+
+      '<div class="mbody">'+
+        '<div class="fg2"><label>Nome do serviço</label><input id="edn" value="'+n+'" placeholder="Ex: Corte de Cabelo"/></div>'+
+        '<div class="frow2">'+
+          '<div class="fg2"><label>Duração (min)</label><input id="edd" type="number" value="'+d+'"/></div>'+
+          '<div class="fg2"><label>Preço (R$)</label><input id="edp" type="number" value="'+p+'"/></div>'+
+        '</div>'+
+        '<div class="fg2"><label>Pagamento antecipado</label><select id="edpm">'+
+          '<option value="none"'+(pm==='none'?' selected':'')+'>Sem antecipação</option>'+
+          '<option value="partial"'+(pm==='partial'?' selected':'')+'>40% via Pix</option>'+
+          '<option value="full"'+(pm==='full'?' selected':'')+'>100% via Pix</option>'+
+        '</select></div>'+
+        (ED.err?'<div class="errbox">'+ED.err+'</div>':'')+
+        '<button class="btnpx" onclick="saveED()"><i class="ti ti-device-floppy" aria-hidden="true"></i> '+(isEdit?'Salvar alterações':'Adicionar serviço')+'</button>'+
+        '<button class="btngx" onclick="closeED()">Cancelar</button>'+
+      '</div>'+
+    '</div></div>';
+}
+function saveED(){
+  const n=document.getElementById('edn').value.trim();
+  const d=parseInt(document.getElementById('edd').value)||60;
+  const p=parseFloat(document.getElementById('edp').value)||0;
+  const pm=document.getElementById('edpm').value;
+  if(!n){ ED.err='Informe o nome do serviço.'; renderED(); return; }
+  if(p<=0){ ED.err='Informe um preço válido.'; renderED(); return; }
+  if(ED.mode==='add'){
+    V.svcs.push({id:V.nid++,n:n,d:d,p:p,pm:pm});
+  } else {
+    const sv=V.svcs.find(x=>x.id===ED.id);
+    sv.n=n; sv.d=d; sv.p=p; sv.pm=pm;
+  }
+  closeED(); render();
+}
+function deleteService(id){
+  if(!confirm('Remover este serviço? Esta ação não pode ser desfeita.')) return;
+  V.svcs = V.svcs.filter(x=>x.id!==id);
+  render();
+}
+
+/* helpers */
+function fCpf(el){let v=el.value.replace(/\D/g,'');if(v.length>3)v=v.slice(0,3)+'.'+v.slice(3);if(v.length>7)v=v.slice(0,7)+'.'+v.slice(7);if(v.length>11)v=v.slice(0,11)+'-'+v.slice(11);el.value=v.slice(0,14);}
+function fPh(el){let v=el.value.replace(/\D/g,'');if(v.length>2)v='('+v.slice(0,2)+') '+v.slice(2);if(v.length>9)v=v.slice(0,9)+'-'+v.slice(9);el.value=v.slice(0,16);}
+
+render();
+</script>
