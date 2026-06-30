@@ -34,9 +34,11 @@
 .mov{position:fixed;inset:0;background:rgba(10,20,18,0.62);display:flex;align-items:center;justify-content:center;z-index:999;padding:14px;backdrop-filter:blur(2px)}
 .mbox{background:#FFFFFF;border-radius:20px;width:480px;max-width:96vw;max-height:94vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.35);border:1px solid #E3E8E6}
 .mhead{background:#1D9E75;padding:20px 22px;border-radius:20px 20px 0 0;position:relative}
+.mhead.gray{background:#3A4A46}
 .mhead .mxb{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.22);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px}
 .mhead .mxb:hover{background:rgba(255,255,255,.35)}
 .mhead-t{color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:16px}
+.mhead-t:last-child{margin-bottom:0}
 .steps5{display:flex;align-items:center}
 .s5{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
 .s5dot{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.4);color:rgba(255,255,255,.7);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -49,6 +51,8 @@
 .mbody{padding:22px;color:#1A2E29;font-size:17px}
 .minfo{background:#EAF8F1;border:1px solid #BFE9D7;border-radius:13px;padding:16px 17px;margin-bottom:18px}
 .minfo-t{font-size:17px;font-weight:800;color:#0F6E56;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.minfo-r{display:flex;justify-content:space-between;font-size:14px;color:#1D9E75;margin-top:5px}
+.minfo-r b{color:#0F6E56}
 .slbl2{font-size:14px;font-weight:700;color:#5C6E69;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px}
 .sg2{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:9px}
 .st2{padding:15px 4px;border:1.5px solid #E3E8E6;border-radius:11px;font-size:16px;cursor:pointer;text-align:center;color:#3A4A46;background:#fff;font-weight:700}
@@ -103,23 +107,21 @@
 .ast .al{font-size:13.5px;color:var(--color-text-secondary);font-weight:600}
 .a2c{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .acd{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:18px}
-.acd h3{font-size:13.5px;font-weight:800;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:15px}
+.acd h3{font-size:13.5px;font-weight:800;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.acd-sub{font-size:13px;color:var(--color-text-secondary);margin-bottom:14px}
 .aitem{padding:13px 0;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .aitem:last-of-type{border-bottom:none}
 .ain{font-size:16.5px;font-weight:700;color:var(--color-text-primary)}
-.aim{font-size:13.5px;color:var(--color-text-secondary);margin-top:4px}
+.aim{font-size:13.5px;color:var(--color-text-secondary);margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .aibtns{display:flex;gap:7px}
 .aibb{padding:0 14px;height:38px;border:0.5px solid var(--color-border-tertiary);border-radius:9px;background:var(--color-background-primary);cursor:pointer;display:flex;align-items:center;gap:6px;color:var(--color-text-secondary);font-size:14px;font-weight:700}
 .aibb:hover{background:#EAF8F1;color:#0F6E56;border-color:#9FE1CB}
 .aibb.dl:hover{background:#FCEBEB;color:#A32D2D;border-color:#F09595}
 .addb{width:100%;padding:14px;margin-top:13px;border:1.5px dashed var(--color-border-secondary);border-radius:11px;background:transparent;cursor:pointer;font-size:15px;color:var(--color-text-secondary);font-weight:700}
 .addb:hover{border-color:#1D9E75;color:#1D9E75;background:#EAF8F1}
-.atable{width:100%;border-collapse:collapse;font-size:15px}
-.atable th{font-size:12.5px;font-weight:700;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.03em;text-align:left;padding:11px 12px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
-.atable td{padding:13px 12px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
-.atable tr:last-child td{border-bottom:none}
 .bdg{display:inline-block;padding:4px 11px;border-radius:20px;font-size:12.5px;font-weight:700}
 .bge{background:#EAF8F1;color:#0F6E56}.bga{background:#FAEEDA;color:#7A4A05}
+.bgi{background:#E6F1FB;color:#0B4A82}.bgd{background:#FDEDED;color:#A32D2D}.bgx{background:#F1F3F2;color:#5C6E69}
 .dwbtn{width:40px;height:40px;border-radius:50%;font-size:14px;font-weight:800;border:0.5px solid var(--color-border-tertiary);cursor:pointer}
 .gatewrap{display:flex;align-items:center;justify-content:center;min-height:540px;padding:26px}
 .gatecard{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:36px 30px;max-width:440px;width:100%;text-align:center}
@@ -130,6 +132,21 @@
 .gate-input:focus{outline:none;border-color:#1D9E75}
 .gate-err{color:#A32D2D;font-size:15px;margin-bottom:14px;font-weight:700}
 .gate-hint{font-size:14.5px;color:var(--color-text-secondary);margin-top:20px;line-height:1.55;display:flex;align-items:flex-start;gap:8px;text-align:left;background:var(--color-background-secondary);padding:14px 15px;border-radius:11px}
+/* Manage modal */
+.mgactions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:18px 0 6px}
+.mgbtn{padding:18px 10px;border-radius:13px;border:none;cursor:pointer;font-size:14.5px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:7px;background:#F4F6F5;color:#1A2E29}
+.mgbtn i{font-size:22px}
+.mgbtn:hover{filter:brightness(0.97)}
+.mgbtn-green{background:#EAF8F1;color:#0F6E56}
+.mgbtn-red{background:#FDEDED;color:#A32D2D}
+.mgbtn-blue{background:#E6F1FB;color:#0B4A82}
+.mgbtn-gray{background:#F1F3F2;color:#5C6E69}
+.rdgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;max-height:280px;overflow-y:auto;margin-bottom:16px;padding-right:2px}
+.rdchip{border:1.5px solid #E3E8E6;border-radius:12px;padding:11px 4px;text-align:center;cursor:pointer;background:#fff}
+.rdchip:hover{border-color:#1D9E75;background:#EAF8F1}
+.rdchip.rdsel{background:#1D9E75;border-color:#1D9E75;color:#fff}
+.rdwd{font-size:11px;font-weight:700;text-transform:uppercase;opacity:.65}
+.rdnum{font-size:19px;font-weight:800;margin-top:4px}
 @media (max-width:680px){
   .app{font-size:16px}
   .hd{height:auto;padding:12px 14px}
@@ -158,9 +175,12 @@
   .svc2-n{font-size:16px}
   .svc2-p{font-size:17px}
   .popts2{grid-template-columns:1fr 1fr}
-  .atable{font-size:13.5px}
-  .atable th,.atable td{padding:10px 8px}
   .gatecard{padding:28px 20px}
+  .mgactions{grid-template-columns:1fr 1fr}
+  .rdgrid{grid-template-columns:repeat(3,1fr)}
+  .aitem{flex-direction:column;align-items:flex-start}
+  .aibtns{width:100%}
+  .aibb{flex:1;justify-content:center}
 }
 @media (max-width:420px){
   .astrow{grid-template-columns:repeat(2,1fr)}
@@ -168,6 +188,7 @@
   .cgrid{gap:3px}
   .dc{height:44px}
   .dc .n{font-size:15px}
+  .rdgrid{grid-template-columns:repeat(3,1fr)}
 }
 </style>
 
@@ -211,16 +232,18 @@ const V = {
     {id:4, n:'Manicure', d:45, p:45, pm:'none'},
   ],
   bks: [
-    {id:1, dt:rdate(2), sl:'09:00', nm:'Maria Silva', cpf:'123.456.789-00', ct:'(11)99999-1111', si:1, pd:true},
-    {id:2, dt:rdate(2), sl:'11:00', nm:'João Costa', cpf:'987.654.321-00', ct:'(11)88888-2222', si:2, pd:false},
-    {id:3, dt:rdate(4), sl:'14:00', nm:'Ana Lima', cpf:'111.222.333-44', ct:'(11)77777-3333', si:3, pd:true},
-    {id:4, dt:rdate(8), sl:'10:00', nm:'Pedro Santos', cpf:'555.666.777-88', ct:'(11)66666-4444', si:1, pd:false},
+    {id:1, dt:rdate(2), sl:'09:00', nm:'Maria Silva', cpf:'123.456.789-00', ct:'(11)99999-1111', si:1, pd:true, status:'agendado'},
+    {id:2, dt:rdate(2), sl:'11:00', nm:'João Costa', cpf:'987.654.321-00', ct:'(11)88888-2222', si:2, pd:false, status:'agendado'},
+    {id:3, dt:rdate(-3), sl:'14:00', nm:'Ana Lima', cpf:'111.222.333-44', ct:'(11)77777-3333', si:3, pd:true, status:'concluido'},
+    {id:4, dt:rdate(-1), sl:'10:00', nm:'Pedro Santos', cpf:'555.666.777-88', ct:'(11)66666-4444', si:1, pd:false, status:'falta'},
   ]
 };
 let BK = {open:false, step:1, date:null, slot:null, svcId:null, nm:'', cpf:'', wh:'', em:'', obs:'', pay:'partial', paidAmt:0, err:''};
 let ED = {mode:null, id:null, err:'', gateErr:''};
+let MG = {open:false, id:null, mode:'main', date:null, slot:null};
 
-function bksOn(dt){ return V.bks.filter(b => b.dt === dt); }
+function bksOn(dt){ return V.bks.filter(b => b.dt === dt && b.status !== 'cancelado'); }
+function bksOnExcept(dt, exceptId){ return V.bks.filter(b => b.dt === dt && b.status !== 'cancelado' && b.id !== exceptId); }
 
 function setV(v){
   V.view = v;
@@ -236,6 +259,7 @@ function render(){
   }
 }
 
+/* ===================== ADMIN GATE ===================== */
 function rAdminGate(){
   return `<div class="gatewrap"><div class="gatecard">
     <div class="gate-ico"><i class="ti ti-lock" aria-hidden="true"></i></div>
@@ -260,6 +284,7 @@ function checkGateCode(){
 }
 function logoutAdmin(){ adminAuth = false; render(); }
 
+/* ===================== CALENDAR ===================== */
 function rclient(){
   const m=V.m, y=V.y, sd=fday(m,y), nd=dimonth(m,y), pdm=dimonth(m===0?11:m-1, m===0?y-1:y), tds=tstr();
   const lbls = WDS.map((w,i) => `<div class="dlbl${i===0||i===6?' we':''}">${w}</div>`).join('');
@@ -294,6 +319,7 @@ function rclient(){
 }
 function chM(d){ V.m+=d; if(V.m>11){V.m=0;V.y++;} if(V.m<0){V.m=11;V.y--;} render(); }
 
+/* ===================== BOOKING MODAL (cliente) ===================== */
 function openBooking(dateStr){
   BK = {open:true, step:1, date:dateStr, slot:null, svcId:null, nm:'', cpf:'', wh:'', em:'', obs:'', pay:'partial', paidAmt:0, err:''};
   renderBK();
@@ -423,7 +449,7 @@ function pixBlock(amt, lbl){
 }
 function bkConfirmPay(amt){
   BK.paidAmt = amt;
-  V.bks.push({id:V.nid++, dt:BK.date, sl:BK.slot, nm:BK.nm, cpf:BK.cpf, ct:BK.wh, si:BK.svcId, pd: amt>0});
+  V.bks.push({id:V.nid++, dt:BK.date, sl:BK.slot, nm:BK.nm, cpf:BK.cpf, ct:BK.wh, si:BK.svcId, pd: amt>0, status:'agendado'});
   BK.step=5; renderBK();
 }
 function bkStep5(dl){
@@ -443,38 +469,59 @@ function bkStep5(dl){
 }
 function bkBack(s){ BK.step=s; BK.err=''; renderBK(); }
 
+/* ===================== STATUS HELPERS ===================== */
+function statusLabel(s){ return {agendado:'Agendado', concluido:'Concluído', falta:'Falta', cancelado:'Cancelado'}[s] || 'Agendado'; }
+function statusBadgeHtml(s){
+  const map = {agendado:['bgi','Agendado'], concluido:['bge','Concluído'], falta:['bgd','Falta'], cancelado:['bgx','Cancelado']};
+  const [cls,label] = map[s] || map.agendado;
+  return `<span class="bdg ${cls}">${label}</span>`;
+}
+
+/* ===================== ADMIN DASHBOARD ===================== */
 function radmin(){
   const tot=V.bks.length, pd=V.bks.filter(b=>b.pd).length, pend=tot-pd;
   const rev=V.bks.filter(b=>b.pd).reduce((s,b)=>{ const sv=V.svcs.find(x=>x.id===b.si); return s+(sv ? sv.p*(sv.pm==='full'?1:0.4) : 0); },0);
+  const concl=V.bks.filter(b=>b.status==='concluido').length;
+  const falt=V.bks.filter(b=>b.status==='falta').length;
+  const canc=V.bks.filter(b=>b.status==='cancelado').length;
+
   const svcRows = V.svcs.map(sv => {
     const pmTxt = sv.pm==='none' ? 'Sem antecipação' : sv.pm==='full' ? '100% via Pix' : '40% via Pix';
     return `<div class="aitem"><div><div class="ain">${sv.n}</div><div class="aim">${sv.d} min · R$ ${sv.p.toFixed(2)} · ${pmTxt}</div></div>
       <div class="aibtns"><button class="aibb" onclick="openEditService(${sv.id})"><i class="ti ti-pencil" aria-hidden="true"></i> Editar</button>
       <button class="aibb dl" onclick="deleteService(${sv.id})"><i class="ti ti-trash" aria-hidden="true"></i></button></div></div>`;
   }).join('');
-  const bkRows = V.bks.slice().reverse().map(b => {
-    const sv = V.svcs.find(x=>x.id===b.si);
-    const p = b.dt.split('-'); const dt = new Date(+p[0], +p[1]-1, +p[2]);
-    return `<tr><td>${dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}</td><td><strong>${b.nm.split(' ')[0]}</strong></td><td>${sv?sv.n:'—'}</td><td>${b.sl}</td><td>${b.pd?'<span class="bdg bge">Pago</span>':'<span class="bdg bga">Pendente</span>'}</td></tr>`;
-  }).join('');
+
+  const bkRows = V.bks.length===0 ? '<p style="font-size:15px;color:var(--color-text-secondary)">Nenhum agendamento ainda.</p>' :
+    V.bks.slice().reverse().map(b => {
+      const sv = V.svcs.find(x=>x.id===b.si);
+      const p = b.dt.split('-'); const dt = new Date(+p[0], +p[1]-1, +p[2]);
+      const dShort = dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
+      return `<div class="aitem">
+        <div><div class="ain">${b.nm.split(' ')[0]} <span style="font-weight:500;color:var(--color-text-secondary);font-size:14px">· ${sv?sv.n:'—'}</span></div>
+        <div class="aim"><i class="ti ti-clock" aria-hidden="true"></i> ${dShort} às ${b.sl} ${statusBadgeHtml(b.status)} ${b.pd?'<span class="bdg bge">Pago</span>':'<span class="bdg bga">Pag. pendente</span>'}</div></div>
+        <div class="aibtns"><button class="aibb" onclick="openManage(${b.id})"><i class="ti ti-settings" aria-hidden="true"></i> Gerenciar</button></div>
+      </div>`;
+    }).join('');
+
   const dayToggles = WDS.map((w,i) => {
     const on = V.workDays[i]===1;
     return `<button class="dwbtn" onclick="toggleWorkDay(${i})" style="background:${on?'#1D9E75':'var(--color-background-secondary)'};color:${on?'#fff':'var(--color-text-secondary)'}">${w.slice(0,1)}</button>`;
   }).join('');
+
   return `<div class="adm">
     <div class="admtop"><div class="sessrow"><i class="ti ti-shield-check" aria-hidden="true" style="color:#1D9E75"></i> Sessão de administrador ativa</div>
     <button class="aibb" onclick="logoutAdmin()"><i class="ti ti-logout" aria-hidden="true"></i> Sair</button></div>
     <div class="astrow">
       <div class="ast"><div class="al"><i class="ti ti-calendar" aria-hidden="true"></i> Total agendados</div><div class="av">${tot}</div></div>
-      <div class="ast"><div class="al"><i class="ti ti-check" aria-hidden="true"></i> Confirmados</div><div class="av">${pd}</div></div>
-      <div class="ast"><div class="al"><i class="ti ti-clock" aria-hidden="true"></i> Pendentes</div><div class="av">${pend}</div></div>
+      <div class="ast"><div class="al"><i class="ti ti-check" aria-hidden="true"></i> Pagamentos confirmados</div><div class="av">${pd}</div></div>
+      <div class="ast"><div class="al"><i class="ti ti-clock" aria-hidden="true"></i> Pagamentos pendentes</div><div class="av">${pend}</div></div>
       <div class="ast"><div class="al"><i class="ti ti-currency-dollar" aria-hidden="true"></i> Recebido Pix</div><div class="av">R$ ${Math.round(rev)}</div></div>
     </div>
     <div class="a2c">
-      <div class="acd"><h3>Serviços cadastrados</h3>${svcRows}
+      <div class="acd"><h3>Serviços cadastrados</h3><div class="acd-sub">${V.svcs.length} serviço(s) ativo(s)</div>${svcRows}
         <button class="addb" onclick="openAddService()"><i class="ti ti-plus" aria-hidden="true"></i> Adicionar serviço</button></div>
-      <div class="acd"><h3>Agendamentos recentes</h3>
-        <div style="overflow-x:auto"><table class="atable"><thead><tr><th>Data</th><th>Cliente</th><th>Serviço</th><th>Hora</th><th>Status</th></tr></thead><tbody>${bkRows}</tbody></table></div></div>
+      <div class="acd"><h3>Agendamentos</h3><div class="acd-sub">${concl} concluídos · ${falt} faltas · ${canc} cancelados</div>${bkRows}</div>
     </div>
     <div class="a2c">
       <div class="acd"><h3>Dias de funcionamento</h3>
@@ -493,6 +540,85 @@ function radmin(){
 }
 function toggleWorkDay(i){ V.workDays[i] = V.workDays[i]===1 ? 0 : 1; render(); }
 
+/* ===================== GERENCIAR AGENDAMENTO ===================== */
+function openManage(id){ MG = {open:true, id:id, mode:'main', date:null, slot:null}; renderMG(); }
+function closeMG(){ MG.open=false; document.getElementById('ml').innerHTML=''; }
+function renderMG(){
+  if(!MG.open) return;
+  const b = V.bks.find(x=>x.id===MG.id);
+  if(!b){ closeMG(); return; }
+  const sv = V.svcs.find(x=>x.id===b.si);
+  const body = MG.mode==='main' ? mgMain(b,sv) : mgReschedule(b);
+  document.getElementById('ml').innerHTML = `<div class="mov" onclick="if(event.target===this)closeMG()"><div class="mbox">
+    <div class="mhead gray"><button class="mxb" onclick="closeMG()"><i class="ti ti-x" aria-hidden="true"></i></button>
+      <div class="mhead-t"><i class="ti ti-${MG.mode==='main'?'settings':'calendar-time'}" aria-hidden="true"></i> ${MG.mode==='main'?'Gerenciar agendamento':'Remarcar agendamento'}</div>
+    </div><div class="mbody">${body}</div>
+  </div></div>`;
+}
+function mgMain(b,sv){
+  const dl = fmtDateLong(b.dt);
+  return `<div class="minfo">
+    <div class="minfo-t"><i class="ti ti-user" aria-hidden="true"></i> ${b.nm}</div>
+    <div class="minfo-r"><span>Serviço</span><b>${sv?sv.n:'—'}</b></div>
+    <div class="minfo-r"><span>Data</span><b style="text-transform:capitalize">${dl}</b></div>
+    <div class="minfo-r"><span>Horário</span><b>${b.sl}</b></div>
+    <div class="minfo-r"><span>Pagamento</span><b>${b.pd?'Pago':'Pendente'}</b></div>
+    <div class="minfo-r"><span>Status atual</span><b>${statusLabel(b.status)}</b></div>
+  </div>
+  <div class="slbl2">O que deseja fazer?</div>
+  <div class="mgactions">
+    <button class="mgbtn mgbtn-green" onclick="setStatus(${b.id},'concluido')"><i class="ti ti-circle-check" aria-hidden="true"></i> Concluído</button>
+    <button class="mgbtn mgbtn-red" onclick="setStatus(${b.id},'falta')"><i class="ti ti-user-x" aria-hidden="true"></i> Marcar falta</button>
+    <button class="mgbtn mgbtn-blue" onclick="startReschedule()"><i class="ti ti-calendar-time" aria-hidden="true"></i> Remarcar</button>
+    <button class="mgbtn mgbtn-gray" onclick="setStatus(${b.id},'cancelado')"><i class="ti ti-ban" aria-hidden="true"></i> Cancelar</button>
+  </div>
+  ${b.status!=='agendado' ? `<button class="btngx" onclick="setStatus(${b.id},'agendado')"><i class="ti ti-rotate" aria-hidden="true"></i> Reverter para Agendado</button>` : ''}
+  <button class="btngx" onclick="closeMG()">Fechar</button>`;
+}
+function setStatus(id, status){
+  const b = V.bks.find(x=>x.id===id);
+  if(b) b.status = status;
+  closeMG(); render();
+}
+function startReschedule(){ MG.mode='reschedule'; MG.date=null; MG.slot=null; renderMG(); }
+function mgReschedule(b){
+  if(!MG.date){
+    let chips = '';
+    for(let i=0;i<28;i++){
+      const d = new Date(T); d.setDate(d.getDate()+i);
+      const ds = dstr(d.getFullYear(), d.getMonth(), d.getDate());
+      const dow = d.getDay();
+      if(V.workDays[dow]===0) continue;
+      const cnt = bksOnExcept(ds, b.id).length;
+      if(cnt>=8) continue;
+      chips += `<div class="rdchip" onclick="pickRDate('${ds}')"><div class="rdwd">${WDS[dow]}</div><div class="rdnum">${d.getDate()}</div></div>`;
+    }
+    return `<div class="slbl2">Escolha a nova data</div><div class="rdgrid">${chips}</div>
+      <button class="btngx" onclick="MG.mode='main';renderMG()">Voltar</button>`;
+  }
+  const taken = bksOnExcept(MG.date, b.id).map(x=>x.sl);
+  const dl = fmtDateLong(MG.date);
+  const slots = SLS.map(s => {
+    const tk = taken.includes(s), on = s===MG.slot;
+    const cls = `st2${tk?' tk2':''}${on?' on2':''}`;
+    const cl = tk ? '' : ` onclick="pickRSlot('${s}')"`;
+    return `<div class="${cls}"${cl}>${s}</div>`;
+  }).join('');
+  return `<div class="minfo"><div class="minfo-t" style="text-transform:capitalize"><i class="ti ti-calendar" aria-hidden="true"></i> ${dl}</div></div>
+    <div class="slbl2">Escolha o novo horário</div><div class="sg2">${slots}</div>
+    <button class="btnpx" onclick="confirmReschedule(${b.id})">Confirmar remarcação <i class="ti ti-check" aria-hidden="true"></i></button>
+    <button class="btngx" onclick="MG.date=null;renderMG()">Escolher outra data</button>`;
+}
+function pickRDate(ds){ MG.date=ds; MG.slot=null; renderMG(); }
+function pickRSlot(s){ MG.slot=s; renderMG(); }
+function confirmReschedule(id){
+  if(!MG.slot){ alert('Selecione um horário para confirmar a remarcação.'); return; }
+  const b = V.bks.find(x=>x.id===id);
+  b.dt = MG.date; b.sl = MG.slot; b.status = 'agendado';
+  closeMG(); render();
+}
+
+/* ===================== SERVIÇOS (admin) ===================== */
 function openAddService(){ ED = {mode:'add', id:null, err:''}; renderED(); }
 function openEditService(id){
   const sv = V.svcs.find(x=>x.id===id);
@@ -544,6 +670,7 @@ function deleteService(id){
   render();
 }
 
+/* ===================== HELPERS ===================== */
 function copyText(text){
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).catch(()=>{ fallbackCopy(text); });
