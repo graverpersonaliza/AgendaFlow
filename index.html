@@ -299,10 +299,6 @@ const V={
     {id:4,n:'Manicure',d:45,p:45,pm:'none'},
   ],
   bks:[
-    {id:1,dt:rdate(2),sl:'09:00',nm:'Maria Silva',cpf:'123.456.789-00',ct:'(11)99999-1111',si:1,pd:true,status:'agendado'},
-    {id:2,dt:rdate(2),sl:'11:00',nm:'João Costa',cpf:'987.654.321-00',ct:'(11)88888-2222',si:2,pd:false,status:'agendado'},
-    {id:3,dt:rdate(-3),sl:'14:00',nm:'Ana Lima',cpf:'111.222.333-44',ct:'(11)77777-3333',si:3,pd:true,status:'concluido'},
-    {id:4,dt:rdate(-1),sl:'10:00',nm:'Pedro Santos',cpf:'555.666.777-88',ct:'(11)66666-4444',si:1,pd:false,status:'falta'},
   ]
 };
 let BK={open:false,step:1,date:null,slot:null,svcId:null,nm:'',cpf:'',wh:'',em:'',obs:'',pay:'partial',paidAmt:0,err:''};
@@ -460,8 +456,10 @@ function mgMain(b,sv){
       <button class="mgbtn mgbtn-gray" onclick="setSt(${b.id},'cancelado')">${ic('ban')} Cancelar</button>
     </div>
     ${b.status!=='agendado'?`<button class="btngx" onclick="setSt(${b.id},'agendado')">${ic('rotate')} Reverter para Agendado</button>`:''}
+    <button class="btngx" style="color:#A32D2D;border-color:#F09595" onclick="delBk(${b.id})">${ic('trash')} Excluir agendamento</button>
     <button class="btngx" onclick="closeMG()">Fechar</button>`;
 }
+function delBk(id){ if(!confirm('Excluir este agendamento permanentemente? Esta ação não pode ser desfeita.')) return; V.bks=V.bks.filter(x=>x.id!==id); closeMG(); render(); }
 function setSt(id,st){ const b=V.bks.find(x=>x.id===id);if(b)b.status=st; closeMG();render(); }
 function startRes(){ MG.mode='reschedule';MG.date=null;MG.slot=null;renderMG(); }
 function mgRes(b){
