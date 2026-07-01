@@ -4,12 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>AgendaFlow — Sistema de Agendamento</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
 <style>
 :root{
-  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --bg: #F4F7F5;
   --card: #FFFFFF;
   --border: #E2E8E5;
@@ -25,6 +22,7 @@
   --rm: 10px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+.icn{width:1em;height:1em;vertical-align:-0.15em;display:inline-block;flex-shrink:0}
 body{font-family:var(--font);background:var(--bg);min-height:100vh;font-size:17px;color:var(--tx1)}
 /* HEADER */
 .hd{background:var(--card);border-bottom:1px solid var(--border);padding:0 20px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;flex-wrap:wrap;gap:10px}
@@ -230,8 +228,8 @@ body{font-family:var(--font);background:var(--bg);min-height:100vh;font-size:17p
 <header class="hd">
   <span class="logo">Agenda<em>Flow</em></span>
   <div class="tabc">
-    <button class="tab on" id="t1" onclick="setV('client')"><i class="ti ti-calendar"></i> Agendar</button>
-    <button class="tab" id="t2" onclick="setV('admin')"><i class="ti ti-layout-dashboard"></i> Admin</button>
+    <button class="tab on" id="t1" onclick="setV('client')"><svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Agendar</button>
+    <button class="tab" id="t2" onclick="setV('admin')"><svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg> Admin</button>
   </div>
 </header>
 <div id="mc"></div>
@@ -250,6 +248,42 @@ function rdate(n){ const d=new Date(T); d.setDate(d.getDate()+n); return dstr(d.
 function tstr(){ return dstr(T.getFullYear(),T.getMonth(),T.getDate()); }
 function slotMin(s){ const p=s.split(':'); return (+p[0])*60+(+p[1]); }
 function nowMin(){ return new Date().getHours()*60+new Date().getMinutes(); }
+
+const ICONS = {
+  'calendar': '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+  'calendar-event': '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="16" r="1.6" fill="currentColor" stroke="none"/>',
+  'calendar-time': '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="13" cy="16" r="4"/><line x1="13" y1="14.3" x2="13" y2="16"/><line x1="13" y1="16" x2="14.3" y2="16.8"/>',
+  'chevron-left': '<polyline points="15 6 9 12 15 18"/>',
+  'chevron-right': '<polyline points="9 6 15 12 9 18"/>',
+  'check': '<polyline points="20 6 9 17 4 12"/>',
+  'circle-check': '<circle cx="12" cy="12" r="9"/><polyline points="9 12 11 14 15 10"/>',
+  'clock': '<circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="12" x2="15" y2="14"/>',
+  'x': '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  'plus': '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  'pencil': '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+  'trash': '<path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>',
+  'lock': '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  'shield-check': '<path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5Z"/><polyline points="9 12 11 14 15 10"/>',
+  'settings': '<line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/>',
+  'logout': '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>',
+  'layout-dashboard': '<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
+  'user': '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>',
+  'user-x': '<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7 1.5 0 2.9.4 4 1.1"/><line x1="17" y1="8" x2="22" y2="13"/><line x1="22" y1="8" x2="17" y2="13"/>',
+  'currency-dollar': '<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  'device-floppy': '<path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M9 3v6h6V3"/><rect x="7" y="13" width="10" height="6"/>',
+  'copy': '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  'qrcode': '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="17"/><line x1="14" y1="20" x2="14" y2="21"/><line x1="17" y1="14" x2="21" y2="14"/><line x1="17" y1="17" x2="21" y2="17"/><line x1="17" y1="21" x2="21" y2="21"/><line x1="21" y1="17" x2="21" y2="21"/>',
+  'rotate': '<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><polyline points="21 3 21 8 16 8"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><polyline points="3 21 3 16 8 16"/>',
+  'ban': '<circle cx="12" cy="12" r="9"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4"/>',
+  'info-circle': '<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.8" r="1" fill="currentColor" stroke="none"/>',
+  'hand-click': '<circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="3" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="21" y2="12"/>',
+  'arrow-right': '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+  'info-circle-filled': '<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="7.8" r="1" fill="currentColor" stroke="none"/>'
+};
+function ic(name){
+  return `<svg class="icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]||''}</svg>`;
+}
+
 
 const ACCESS_CODES = ['AF-28AY-V24Q','AF-2MV3-AVUP','AF-2TQW-DQCW','AF-2XB9-WM9P','AF-3L7J-B3BF','AF-3TEP-WP93','AF-3XGR-NN6J','AF-3Z66-HRQE','AF-49U3-C7FW','AF-4Q6T-AL5X','AF-5CBF-PQBN','AF-5H2N-SC5A','AF-5J7M-DS2W','AF-5MT7-RE6G','AF-5QM7-DRH7','AF-5TCA-XJSL','AF-5W76-6P8L','AF-5Y54-7DGD','AF-65AH-EKCZ','AF-6SRT-9RT6','AF-7GEP-SJYE','AF-7K5M-T875','AF-7KSJ-RS53','AF-7U59-KNUP','AF-8TUG-NUQZ','AF-8Y4X-WGLX','AF-9EDK-KVFR','AF-9QT5-9B2X','AF-9UT4-88R7','AF-A4FQ-H7HK','AF-ASMG-VNKZ','AF-BRNB-KRJ8','AF-CF4W-SPWR','AF-DAFR-L498','AF-DDWD-D8LD','AF-ECXE-RT9P','AF-EDLV-U6H7','AF-EURT-XWFJ','AF-EXA4-9G5Z','AF-F8BD-YQEC','AF-FMEE-R3HR','AF-FUQ3-RVZ8','AF-FUXF-RVQN','AF-GJSH-GKTU','AF-H4Q2-66V5','AF-HBTR-QJGF','AF-HP7S-ZLHL','AF-HTXH-U5L7','AF-J7W6-56L8','AF-J8LS-5PNV','AF-J8R8-4NGG','AF-J9GA-U886','AF-K2NJ-ET4X','AF-K5JC-VZCY','AF-KBCR-8E74','AF-KQ2K-PE44','AF-L5E2-27SA','AF-LAW9-BHZV','AF-LG2C-8QN7','AF-M4BM-X4RT','AF-M86T-M59F','AF-MVAJ-TCDU','AF-N293-RKAG','AF-NZ5E-XWHV','AF-NZ96-DPTJ','AF-P3DL-2A2S','AF-P7WX-2T4S','AF-PRGY-4KRL','AF-PXPS-9SDF','AF-QG2T-7ZLZ','AF-QHNW-HMNP','AF-R49R-896B','AF-RDRF-F9EJ','AF-RGVH-CY5Z','AF-RMEL-A468','AF-RZUL-6VAV','AF-S3JV-7WEA','AF-SMSC-G5YW','AF-SN5H-QKTK','AF-SWH3-A74D','AF-TETY-3XBH','AF-TKPX-GF2G','AF-TWRF-T6R7','AF-U69H-BRLV','AF-UCQU-U7EQ','AF-UZNE-CQUF','AF-V3T9-6FC5','AF-V4W3-UJN4','AF-VDGP-PSFL','AF-VGBV-23NE','AF-WSBF-QBTC','AF-X74D-P42B','AF-XBQQ-AEDQ','AF-XMDS-8HE3','AF-Y5XY-7TVS','AF-YPTE-LRL7','AF-YSXT-TANF','AF-YVQQ-BN3X','AF-YYSC-7H2F','AF-ZQJ9-FDHK'];
 const NORM_CODES = new Set(ACCESS_CODES.map(c=>c.replace(/-/g,'')));
@@ -284,13 +318,13 @@ function render(){ document.getElementById('mc').innerHTML=V.view==='client'?rcl
 
 function rGate(){
   return `<div class="gatewrap"><div class="gatecard">
-    <div class="gate-ico"><i class="ti ti-lock"></i></div>
+    <div class="gate-ico">${ic('lock')}</div>
     <div class="gate-tt">Acesso restrito</div>
     <div class="gate-tx">Digite o código de liberação para acessar o painel administrativo do seu negócio.</div>
     <input class="gate-input" id="gi" placeholder="AF-XXXX-XXXX" maxlength="20" onkeypress="if(event.key==='Enter')checkCode()"/>
     ${ED.gateErr?`<div class="gate-err">${ED.gateErr}</div>`:''}
-    <button class="btnpx" onclick="checkCode()"><i class="ti ti-shield-check"></i> Acessar painel</button>
-    <div class="gate-hint"><i class="ti ti-info-circle"></i> Os códigos de liberação são pessoais e intransferíveis. Não são exibidos publicamente nesta tela.</div>
+    <button class="btnpx" onclick="checkCode()">${ic('shield-check')} Acessar painel</button>
+    <div class="gate-hint">${ic('info-circle')} Os códigos de liberação são pessoais e intransferíveis. Não são exibidos publicamente nesta tela.</div>
   </div></div>`;
 }
 function checkCode(){ const n=document.getElementById('gi').value.replace(/[^A-Za-z0-9]/g,'').toUpperCase(); if(NORM_CODES.has(n)){adminAuth=true;ED.gateErr='';render();}else{ED.gateErr='Código inválido. Verifique e tente novamente.';render();setTimeout(()=>{const e=document.getElementById('gi');if(e)e.focus();},0);} }
@@ -320,9 +354,9 @@ function rclient(){
   return `<div class="page"><div class="cal-card">
     <div class="cnav"><span class="cml">${MNS[m]} ${y}</span>
     <div class="cnbs">
-      <button class="cnb" ${atMin?'disabled':''} onclick="chM(-1)" aria-label="Mês anterior"><i class="ti ti-chevron-left"></i></button>
+      <button class="cnb" ${atMin?'disabled':''} onclick="chM(-1)" aria-label="Mês anterior">${ic('chevron-left')}</button>
       <button class="cnb cnb-today" onclick="goToday()">Hoje</button>
-      <button class="cnb" onclick="chM(1)" aria-label="Próximo mês"><i class="ti ti-chevron-right"></i></button>
+      <button class="cnb" onclick="chM(1)" aria-label="Próximo mês">${ic('chevron-right')}</button>
     </div></div>
     <div class="cgrid">${lbls}${cells}</div></div>
     <div class="lgnd">
@@ -330,7 +364,7 @@ function rclient(){
       <div class="li"><div class="ld" style="background:#9FE1CB"></div>Com agendamentos</div>
       <div class="li"><div class="ld" style="background:#C7D1CD"></div>Indisponível / cheio</div>
     </div>
-    <div class="hintcard"><i class="ti ti-hand-click"></i> Clique em qualquer dia disponível para agendar. Use as setas para navegar entre os meses. Datas e horários já passados ficam bloqueados automaticamente.</div>
+    <div class="hintcard">${ic('hand-click')} Clique em qualquer dia disponível para agendar. Use as setas para navegar entre os meses. Datas e horários já passados ficam bloqueados automaticamente.</div>
   </div>`;
 }
 function chM(d){ let nm=V.m+d,ny=V.y; if(nm>11){nm=0;ny++;} if(nm<0){nm=11;ny--;} if(ny<T.getFullYear()||(ny===T.getFullYear()&&nm<T.getMonth())) return; V.m=nm;V.y=ny;render(); }
@@ -344,7 +378,7 @@ function stepDots(){
   let h='<div class="steps5">';
   for(let i=1;i<=5;i++){
     const c=i<BK.step?'s5 dn':i===BK.step?'s5 act':'s5';
-    h+=`<div class="${c}"><div class="s5dot">${i<BK.step?'<i class="ti ti-check"></i>':i}</div><span class="s5lbl">${labs[i-1]}</span></div>`;
+    h+=`<div class="${c}"><div class="s5dot">${i<BK.step?ic('check'):i}</div><span class="s5lbl">${labs[i-1]}</span></div>`;
     if(i<5) h+=`<div class="s5line${i<BK.step?' on':''}"></div>`;
   }
   return h+'</div>';
@@ -353,39 +387,39 @@ function renderBK(){
   const dl=fmtDL(BK.date);
   let body=BK.step===1?bkS1(dl):BK.step===2?bkS2():BK.step===3?bkS3():BK.step===4?bkS4():bkS5(dl);
   document.getElementById('ml').innerHTML=`<div class="mov" onclick="if(event.target===this)closeBK()"><div class="mbox">
-    <div class="mhead"><button class="mxb" onclick="closeBK()"><i class="ti ti-x"></i></button>
-    <div class="mhead-t"><i class="ti ti-calendar-event"></i> Novo Agendamento</div>${stepDots()}</div>
+    <div class="mhead"><button class="mxb" onclick="closeBK()">${ic('x')}</button>
+    <div class="mhead-t">${ic('calendar-event')} Novo Agendamento</div>${stepDots()}</div>
     <div class="mbody">${body}</div></div></div>`;
 }
 function bkS1(dl){
   const taken=bksOn(BK.date).map(b=>b.sl),isT=BK.date===tstr(),cm=nowMin();
   const slots=SLS.map(s=>{const pt=isT&&slotMin(s)<=cm,tk=taken.includes(s)||pt,on=s===BK.slot;const cl=`st2${tk?' tk2':''}${on?' on2':''}`;const ck=tk?'':` onclick="pickSl('${s}')"`;return `<div class="${cl}"${ck}>${s}</div>`;}).join('');
-  return `<div class="minfo"><div class="minfo-t" style="text-transform:capitalize"><i class="ti ti-calendar"></i> ${dl}</div></div>
+  return `<div class="minfo"><div class="minfo-t" style="text-transform:capitalize">${ic('calendar')} ${dl}</div></div>
     <div class="slbl2">Escolha o horário</div><div class="sg2">${slots}</div>
     ${BK.err?`<div class="errbox">${BK.err}</div>`:''}
-    <button class="btnpx" onclick="bkN1()">Continuar <i class="ti ti-arrow-right"></i></button>`;
+    <button class="btnpx" onclick="bkN1()">Continuar ${ic('arrow-right')}</button>`;
 }
 function pickSl(s){ BK.slot=s;BK.err='';renderBK(); }
 function bkN1(){ if(!BK.slot){BK.err='Selecione um horário.';renderBK();return;} BK.step=2;renderBK(); }
-function bkS2(){ const c=V.svcs.map(sv=>{const t=sv.pm==='none'?'Pagamento no dia':sv.pm==='full'?'100% antecipado via Pix':'40% antecipado via Pix';return `<div class="svc2" onclick="pickSv(${sv.id})"><div><div class="svc2-n">${sv.n}</div><div class="svc2-m"><i class="ti ti-clock"></i> ${sv.d} min · ${t}</div></div><div class="svc2-p">R$ ${sv.p.toFixed(2)}</div></div>`;}).join('');return `<div class="slbl2">Escolha o serviço</div>${c}<button class="btngx" onclick="bkBk(1)">Voltar</button>`; }
+function bkS2(){ const c=V.svcs.map(sv=>{const t=sv.pm==='none'?'Pagamento no dia':sv.pm==='full'?'100% antecipado via Pix':'40% antecipado via Pix';return `<div class="svc2" onclick="pickSv(${sv.id})"><div><div class="svc2-n">${sv.n}</div><div class="svc2-m">${ic('clock')} ${sv.d} min · ${t}</div></div><div class="svc2-p">R$ ${sv.p.toFixed(2)}</div></div>`;}).join('');return `<div class="slbl2">Escolha o serviço</div>${c}<button class="btngx" onclick="bkBk(1)">Voltar</button>`; }
 function pickSv(id){ BK.svcId=id;BK.step=3;renderBK(); }
-function bkS3(){ return `<div class="frow2"><div class="fg2"><label>Nome completo</label><input id="bkn" value="${BK.nm}" placeholder="Maria da Silva"/></div><div class="fg2"><label>CPF</label><input id="bkc" value="${BK.cpf}" placeholder="000.000.000-00" maxlength="14" oninput="fCpf(this)"/></div></div><div class="frow2"><div class="fg2"><label>WhatsApp</label><input id="bkw" value="${BK.wh}" placeholder="(11) 99999-9999" maxlength="16" oninput="fPh(this)"/></div><div class="fg2"><label>E-mail</label><input id="bke" value="${BK.em}" placeholder="nome@email.com" type="email"/></div></div><div class="fg2"><label>Observações (opcional)</label><textarea id="bko" rows="2" placeholder="Preferências...">${BK.obs}</textarea></div>${BK.err?`<div class="errbox">${BK.err}</div>`:''}<button class="btnpx" onclick="bkN3()">Continuar <i class="ti ti-arrow-right"></i></button><button class="btngx" onclick="bkBk(2)">Voltar</button>`; }
+function bkS3(){ return `<div class="frow2"><div class="fg2"><label>Nome completo</label><input id="bkn" value="${BK.nm}" placeholder="Maria da Silva"/></div><div class="fg2"><label>CPF</label><input id="bkc" value="${BK.cpf}" placeholder="000.000.000-00" maxlength="14" oninput="fCpf(this)"/></div></div><div class="frow2"><div class="fg2"><label>WhatsApp</label><input id="bkw" value="${BK.wh}" placeholder="(11) 99999-9999" maxlength="16" oninput="fPh(this)"/></div><div class="fg2"><label>E-mail</label><input id="bke" value="${BK.em}" placeholder="nome@email.com" type="email"/></div></div><div class="fg2"><label>Observações (opcional)</label><textarea id="bko" rows="2" placeholder="Preferências...">${BK.obs}</textarea></div>${BK.err?`<div class="errbox">${BK.err}</div>`:''}<button class="btnpx" onclick="bkN3()">Continuar ${ic('arrow-right')}</button><button class="btngx" onclick="bkBk(2)">Voltar</button>`; }
 function bkN3(){ const nm=document.getElementById('bkn').value.trim(),cpf=document.getElementById('bkc').value.trim(),wh=document.getElementById('bkw').value.trim(); if(!nm||!cpf||!wh){BK.err='Preencha nome, CPF e WhatsApp.';renderBK();return;} BK.nm=nm;BK.cpf=cpf;BK.wh=wh;BK.em=document.getElementById('bke').value.trim();BK.obs=document.getElementById('bko').value.trim();BK.err='';BK.step=4;renderBK(); }
 function bkS4(){
   const sv=V.svcs.find(x=>x.id===BK.svcId);
-  if(sv.pm==='none') return `<div class="infobox"><i class="ti ti-info-circle"></i> Sem pagamento antecipado. O valor será cobrado no dia.</div><div class="totalrow"><span>A pagar agora</span><span>R$ 0,00</span></div><button class="btnpx" onclick="bkPay2(0)">Confirmar agendamento <i class="ti ti-check"></i></button><button class="btngx" onclick="bkBk(3)">Voltar</button>`;
-  if(sv.pm==='full') return `${pixB(sv.p.toFixed(2),sv.n)}<div class="totalrow"><span>Total via Pix</span><span>R$ ${sv.p.toFixed(2)}</span></div><button class="btnpx" onclick="bkPay2(${sv.p})">Confirmei o pagamento <i class="ti ti-check"></i></button><button class="btngx" onclick="bkBk(3)">Voltar</button>`;
+  if(sv.pm==='none') return `<div class="infobox">${ic('info-circle')} Sem pagamento antecipado. O valor será cobrado no dia.</div><div class="totalrow"><span>A pagar agora</span><span>R$ 0,00</span></div><button class="btnpx" onclick="bkPay2(0)">Confirmar agendamento ${ic('check')}</button><button class="btngx" onclick="bkBk(3)">Voltar</button>`;
+  if(sv.pm==='full') return `${pixB(sv.p.toFixed(2),sv.n)}<div class="totalrow"><span>Total via Pix</span><span>R$ ${sv.p.toFixed(2)}</span></div><button class="btnpx" onclick="bkPay2(${sv.p})">Confirmei o pagamento ${ic('check')}</button><button class="btngx" onclick="bkBk(3)">Voltar</button>`;
   const pt=sv.p*0.4,ft=sv.p,amt=BK.pay==='full'?ft:pt;
-  return `<div class="popts2"><div class="popt2${BK.pay==='partial'?' on2':''}" onclick="bkPO('partial')"><div class="ptit2">40% agora</div><div class="pval2">R$ ${pt.toFixed(2)}</div><div class="phin2">+ R$ ${(sv.p*0.6).toFixed(2)} no dia</div></div><div class="popt2${BK.pay==='full'?' on2':''}" onclick="bkPO('full')"><div class="ptit2">100% agora</div><div class="pval2">R$ ${ft.toFixed(2)}</div><div class="phin2">Nada a pagar no dia</div></div></div>${pixB(amt.toFixed(2),sv.n)}<div class="totalrow"><span>A pagar via Pix</span><span>R$ ${amt.toFixed(2)}</span></div><button class="btnpx" onclick="bkPay2(${amt})">Confirmei o pagamento <i class="ti ti-check"></i></button><button class="btngx" onclick="bkBk(3)">Voltar</button>`;
+  return `<div class="popts2"><div class="popt2${BK.pay==='partial'?' on2':''}" onclick="bkPO('partial')"><div class="ptit2">40% agora</div><div class="pval2">R$ ${pt.toFixed(2)}</div><div class="phin2">+ R$ ${(sv.p*0.6).toFixed(2)} no dia</div></div><div class="popt2${BK.pay==='full'?' on2':''}" onclick="bkPO('full')"><div class="ptit2">100% agora</div><div class="pval2">R$ ${ft.toFixed(2)}</div><div class="phin2">Nada a pagar no dia</div></div></div>${pixB(amt.toFixed(2),sv.n)}<div class="totalrow"><span>A pagar via Pix</span><span>R$ ${amt.toFixed(2)}</span></div><button class="btnpx" onclick="bkPay2(${amt})">Confirmei o pagamento ${ic('check')}</button><button class="btngx" onclick="bkBk(3)">Voltar</button>`;
 }
 function bkPO(o){ BK.pay=o;renderBK(); }
 function pixB(amt,lbl){
   let r=''; for(let i=0;i<24;i++){if(Math.random()>.42) r+=`<rect x="${28+(i%5)*8}" y="${28+Math.floor(i/5)*8}" width="7" height="7" fill="#0F6E56" rx="1"/>`;}
   const qr=`<svg width="100" height="100" viewBox="0 0 84 84" xmlns="http://www.w3.org/2000/svg"><rect width="84" height="84" fill="white" rx="4"/><rect x="2" y="2" width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2.5" rx="2"/><rect x="7" y="7" width="12" height="12" fill="#0F6E56" rx="1"/><rect x="60" y="2" width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2.5" rx="2"/><rect x="65" y="7" width="12" height="12" fill="#0F6E56" rx="1"/><rect x="2" y="60" width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2.5" rx="2"/><rect x="7" y="65" width="12" height="12" fill="#0F6E56" rx="1"/>${r}</svg>`;
-  return `<div class="pixb2"><div style="font-size:14px;font-weight:700;color:#0F6E56"><i class="ti ti-qrcode"></i> Pague via Pix</div><div class="pixqr2">${qr}</div><div class="pixamt2">R$ ${amt}</div><div class="pixlb2">${lbl}</div><div class="pixk2" onclick="cpTxt('agenda.flow@pix.com.br');alert('Chave copiada!')"><i class="ti ti-copy"></i> agenda.flow@pix.com.br</div></div>`;
+  return `<div class="pixb2"><div style="font-size:14px;font-weight:700;color:#0F6E56">${ic('qrcode')} Pague via Pix</div><div class="pixqr2">${qr}</div><div class="pixamt2">R$ ${amt}</div><div class="pixlb2">${lbl}</div><div class="pixk2" onclick="cpTxt('agenda.flow@pix.com.br');alert('Chave copiada!')">${ic('copy')} agenda.flow@pix.com.br</div></div>`;
 }
 function bkPay2(amt){ BK.paidAmt=amt; V.bks.push({id:V.nid++,dt:BK.date,sl:BK.slot,nm:BK.nm,cpf:BK.cpf,ct:BK.wh,si:BK.svcId,pd:amt>0,status:'agendado'}); BK.step=5;renderBK(); }
-function bkS5(dl){ const sv=V.svcs.find(x=>x.id===BK.svcId); return `<div class="cof2"><div class="cof2-ico"><i class="ti ti-check"></i></div><div class="cof2-tt">Agendamento confirmado!</div><div class="cof2-tx">Você receberá a confirmação pelo WhatsApp informado. Até breve!</div><div class="cof2-crd"><div class="cr2"><span>Serviço</span><b>${sv.n}</b></div><div class="cr2"><span>Data</span><b style="text-transform:capitalize">${dl}</b></div><div class="cr2"><span>Horário</span><b>${BK.slot}</b></div><div class="cr2"><span>Nome</span><b>${BK.nm}</b></div><div class="cr2"><span>CPF</span><b>${BK.cpf}</b></div><div class="cr2"><span>Pagamento</span><b>${BK.paidAmt>0?'R$ '+BK.paidAmt.toFixed(2)+' via Pix':'No dia do atendimento'}</b></div></div><button class="btnpx" onclick="closeBK();render()">Concluir</button></div>`; }
+function bkS5(dl){ const sv=V.svcs.find(x=>x.id===BK.svcId); return `<div class="cof2"><div class="cof2-ico">${ic('check')}</div><div class="cof2-tt">Agendamento confirmado!</div><div class="cof2-tx">Você receberá a confirmação pelo WhatsApp informado. Até breve!</div><div class="cof2-crd"><div class="cr2"><span>Serviço</span><b>${sv.n}</b></div><div class="cr2"><span>Data</span><b style="text-transform:capitalize">${dl}</b></div><div class="cr2"><span>Horário</span><b>${BK.slot}</b></div><div class="cr2"><span>Nome</span><b>${BK.nm}</b></div><div class="cr2"><span>CPF</span><b>${BK.cpf}</b></div><div class="cr2"><span>Pagamento</span><b>${BK.paidAmt>0?'R$ '+BK.paidAmt.toFixed(2)+' via Pix':'No dia do atendimento'}</b></div></div><button class="btnpx" onclick="closeBK();render()">Concluir</button></div>`; }
 function bkBk(s){ BK.step=s;BK.err='';renderBK(); }
 
 function stLbl(s){ return {agendado:'Agendado',concluido:'Concluído',falta:'Falta',cancelado:'Cancelado'}[s]||'Agendado'; }
@@ -395,13 +429,13 @@ function radmin(){
   const tot=V.bks.length,pd=V.bks.filter(b=>b.pd).length,pend=tot-pd;
   const rev=V.bks.filter(b=>b.pd).reduce((s,b)=>{const sv=V.svcs.find(x=>x.id===b.si);return s+(sv?sv.p*(sv.pm==='full'?1:.4):0);},0);
   const concl=V.bks.filter(b=>b.status==='concluido').length,falt=V.bks.filter(b=>b.status==='falta').length,canc=V.bks.filter(b=>b.status==='cancelado').length;
-  const svR=V.svcs.map(sv=>{const t=sv.pm==='none'?'Sem antecipação':sv.pm==='full'?'100% via Pix':'40% via Pix';return `<div class="aitem"><div><div class="ain">${sv.n}</div><div class="aim">${sv.d} min · R$ ${sv.p.toFixed(2)} · ${t}</div></div><div class="aibtns"><button class="aibb" onclick="openES(${sv.id})"><i class="ti ti-pencil"></i> Editar</button><button class="aibb dl" onclick="delSv(${sv.id})"><i class="ti ti-trash"></i></button></div></div>`;}).join('');
-  const bkR=V.bks.length===0?'<p style="font-size:15px;color:#9AACA7">Nenhum agendamento ainda.</p>':V.bks.slice().reverse().map(b=>{const sv=V.svcs.find(x=>x.id===b.si);const p=b.dt.split('-'),dt=new Date(+p[0],+p[1]-1,+p[2]);return `<div class="aitem"><div><div class="ain">${b.nm.split(' ')[0]} <span style="font-weight:500;color:#9AACA7;font-size:14px">· ${sv?sv.n:'—'}</span></div><div class="aim"><i class="ti ti-clock"></i> ${dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})} às ${b.sl} ${stBdg(b.status)} ${b.pd?'<span class="bdg bge">Pago</span>':'<span class="bdg bga">Pag. pendente</span>'}</div></div><div class="aibtns"><button class="aibb" onclick="openMG(${b.id})"><i class="ti ti-settings"></i> Gerenciar</button></div></div>`;}).join('');
+  const svR=V.svcs.map(sv=>{const t=sv.pm==='none'?'Sem antecipação':sv.pm==='full'?'100% via Pix':'40% via Pix';return `<div class="aitem"><div><div class="ain">${sv.n}</div><div class="aim">${sv.d} min · R$ ${sv.p.toFixed(2)} · ${t}</div></div><div class="aibtns"><button class="aibb" onclick="openES(${sv.id})">${ic('pencil')} Editar</button><button class="aibb dl" onclick="delSv(${sv.id})">${ic('trash')}</button></div></div>`;}).join('');
+  const bkR=V.bks.length===0?'<p style="font-size:15px;color:#9AACA7">Nenhum agendamento ainda.</p>':V.bks.slice().reverse().map(b=>{const sv=V.svcs.find(x=>x.id===b.si);const p=b.dt.split('-'),dt=new Date(+p[0],+p[1]-1,+p[2]);return `<div class="aitem"><div><div class="ain">${b.nm.split(' ')[0]} <span style="font-weight:500;color:#9AACA7;font-size:14px">· ${sv?sv.n:'—'}</span></div><div class="aim">${ic('clock')} ${dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})} às ${b.sl} ${stBdg(b.status)} ${b.pd?'<span class="bdg bge">Pago</span>':'<span class="bdg bga">Pag. pendente</span>'}</div></div><div class="aibtns"><button class="aibb" onclick="openMG(${b.id})">${ic('settings')} Gerenciar</button></div></div>`;}).join('');
   const dT=WDS.map((w,i)=>{const on=V.workDays[i]===1;return `<button class="dwbtn" onclick="togWD(${i})" style="background:${on?'#1D9E75':'#F0F4F2'};color:${on?'#fff':'#5C6E69'};border-color:${on?'#1D9E75':'#E2E8E5'}">${w.slice(0,1)}</button>`;}).join('');
   return `<div class="page adm">
-    <div class="admtop"><div class="sessrow"><i class="ti ti-shield-check" style="color:#1D9E75"></i> Sessão de administrador ativa</div><button class="aibb" onclick="logoutAdmin()"><i class="ti ti-logout"></i> Sair</button></div>
-    <div class="astrow"><div class="ast"><div class="al"><i class="ti ti-calendar"></i> Total agendados</div><div class="av">${tot}</div></div><div class="ast"><div class="al"><i class="ti ti-check"></i> Pag. confirmados</div><div class="av">${pd}</div></div><div class="ast"><div class="al"><i class="ti ti-clock"></i> Pag. pendentes</div><div class="av">${pend}</div></div><div class="ast"><div class="al"><i class="ti ti-currency-dollar"></i> Recebido Pix</div><div class="av">R$ ${Math.round(rev)}</div></div></div>
-    <div class="a2c"><div class="acd"><h3>Serviços cadastrados</h3><div class="acd-sub">${V.svcs.length} serviço(s) ativo(s)</div>${svR}<button class="addb" onclick="openAS()"><i class="ti ti-plus"></i> Adicionar serviço</button></div><div class="acd"><h3>Agendamentos</h3><div class="acd-sub">${concl} concluídos · ${falt} faltas · ${canc} cancelados</div>${bkR}</div></div>
+    <div class="admtop"><div class="sessrow"><span style="color:#1D9E75">${ic('shield-check')}</span> Sessão de administrador ativa</div><button class="aibb" onclick="logoutAdmin()">${ic('logout')} Sair</button></div>
+    <div class="astrow"><div class="ast"><div class="al">${ic('calendar')} Total agendados</div><div class="av">${tot}</div></div><div class="ast"><div class="al">${ic('check')} Pag. confirmados</div><div class="av">${pd}</div></div><div class="ast"><div class="al">${ic('clock')} Pag. pendentes</div><div class="av">${pend}</div></div><div class="ast"><div class="al">${ic('currency-dollar')} Recebido Pix</div><div class="av">R$ ${Math.round(rev)}</div></div></div>
+    <div class="a2c"><div class="acd"><h3>Serviços cadastrados</h3><div class="acd-sub">${V.svcs.length} serviço(s) ativo(s)</div>${svR}<button class="addb" onclick="openAS()">${ic('plus')} Adicionar serviço</button></div><div class="acd"><h3>Agendamentos</h3><div class="acd-sub">${concl} concluídos · ${falt} faltas · ${canc} cancelados</div>${bkR}</div></div>
     <div class="a2c"><div class="acd"><h3>Dias de funcionamento</h3><p style="font-size:14px;color:#5C6E69;margin-bottom:14px">Clique para ativar/desativar. Afeta o calendário do cliente.</p><div style="display:flex;gap:8px;flex-wrap:wrap">${dT}</div><div class="fg2" style="margin-top:17px"><label>Abertura</label><input type="time" value="08:00"/></div><div class="fg2"><label>Fechamento</label><input type="time" value="18:00"/></div><button class="btnpx" onclick="alert('Horário salvo!')">Salvar horário</button></div><div class="acd"><h3>Dados do negócio</h3><div class="fg2"><label>Nome do negócio</label><input value="Meu Negócio"/></div><div class="fg2"><label>Chave Pix</label><input value="agenda.flow@pix.com.br"/></div><div class="fg2"><label>Intervalo entre horários</label><select><option>30 min</option><option selected>60 min</option></select></div><button class="btnpx" onclick="alert('Dados salvos!')">Salvar dados</button></div></div>
   </div>`;
 }
@@ -413,19 +447,19 @@ function renderMG(){
   const b=V.bks.find(x=>x.id===MG.id); if(!b){closeMG();return;}
   const sv=V.svcs.find(x=>x.id===b.si);
   const body=MG.mode==='main'?mgMain(b,sv):mgRes(b);
-  document.getElementById('ml').innerHTML=`<div class="mov" onclick="if(event.target===this)closeMG()"><div class="mbox"><div class="mhead gray"><button class="mxb" onclick="closeMG()"><i class="ti ti-x"></i></button><div class="mhead-t"><i class="ti ti-${MG.mode==='main'?'settings':'calendar-time'}"></i> ${MG.mode==='main'?'Gerenciar agendamento':'Remarcar agendamento'}</div></div><div class="mbody">${body}</div></div></div>`;
+  document.getElementById('ml').innerHTML=`<div class="mov" onclick="if(event.target===this)closeMG()"><div class="mbox"><div class="mhead gray"><button class="mxb" onclick="closeMG()">${ic('x')}</button><div class="mhead-t">${MG.mode==='main'?ic('settings'):ic('calendar-time')} ${MG.mode==='main'?'Gerenciar agendamento':'Remarcar agendamento'}</div></div><div class="mbody">${body}</div></div></div>`;
 }
 function mgMain(b,sv){
   const dl=fmtDL(b.dt);
-  return `<div class="minfo"><div class="minfo-t"><i class="ti ti-user"></i> ${b.nm}</div><div class="minfo-r"><span>Serviço</span><b>${sv?sv.n:'—'}</b></div><div class="minfo-r"><span>Data</span><b style="text-transform:capitalize">${dl}</b></div><div class="minfo-r"><span>Horário</span><b>${b.sl}</b></div><div class="minfo-r"><span>Pagamento</span><b>${b.pd?'Pago':'Pendente'}</b></div><div class="minfo-r"><span>Status</span><b>${stLbl(b.status)}</b></div></div>
+  return `<div class="minfo"><div class="minfo-t">${ic('user')} ${b.nm}</div><div class="minfo-r"><span>Serviço</span><b>${sv?sv.n:'—'}</b></div><div class="minfo-r"><span>Data</span><b style="text-transform:capitalize">${dl}</b></div><div class="minfo-r"><span>Horário</span><b>${b.sl}</b></div><div class="minfo-r"><span>Pagamento</span><b>${b.pd?'Pago':'Pendente'}</b></div><div class="minfo-r"><span>Status</span><b>${stLbl(b.status)}</b></div></div>
     <div class="slbl2">O que deseja fazer?</div>
     <div class="mgactions">
-      <button class="mgbtn mgbtn-green" onclick="setSt(${b.id},'concluido')"><i class="ti ti-circle-check"></i> Concluído</button>
-      <button class="mgbtn mgbtn-red" onclick="setSt(${b.id},'falta')"><i class="ti ti-user-x"></i> Marcar falta</button>
-      <button class="mgbtn mgbtn-blue" onclick="startRes()"><i class="ti ti-calendar-time"></i> Remarcar</button>
-      <button class="mgbtn mgbtn-gray" onclick="setSt(${b.id},'cancelado')"><i class="ti ti-ban"></i> Cancelar</button>
+      <button class="mgbtn mgbtn-green" onclick="setSt(${b.id},'concluido')">${ic('circle-check')} Concluído</button>
+      <button class="mgbtn mgbtn-red" onclick="setSt(${b.id},'falta')">${ic('user-x')} Marcar falta</button>
+      <button class="mgbtn mgbtn-blue" onclick="startRes()">${ic('calendar-time')} Remarcar</button>
+      <button class="mgbtn mgbtn-gray" onclick="setSt(${b.id},'cancelado')">${ic('ban')} Cancelar</button>
     </div>
-    ${b.status!=='agendado'?`<button class="btngx" onclick="setSt(${b.id},'agendado')"><i class="ti ti-rotate"></i> Reverter para Agendado</button>`:''}
+    ${b.status!=='agendado'?`<button class="btngx" onclick="setSt(${b.id},'agendado')">${ic('rotate')} Reverter para Agendado</button>`:''}
     <button class="btngx" onclick="closeMG()">Fechar</button>`;
 }
 function setSt(id,st){ const b=V.bks.find(x=>x.id===id);if(b)b.status=st; closeMG();render(); }
@@ -446,7 +480,7 @@ function mgRes(b){
   }
   const taken=bksOnExcept(MG.date,b.id).map(x=>x.sl),isT=MG.date===tstr(),cm=nowMin(),dl=fmtDL(MG.date);
   const slots=SLS.map(s=>{const pt=isT&&slotMin(s)<=cm,tk=taken.includes(s)||pt,on=s===MG.slot;const cl=`st2${tk?' tk2':''}${on?' on2':''}`;const ck=tk?'':` onclick="pickRS('${s}')"`;return `<div class="${cl}"${ck}>${s}</div>`;}).join('');
-  return `<div class="minfo"><div class="minfo-t" style="text-transform:capitalize"><i class="ti ti-calendar"></i> ${dl}</div></div><div class="slbl2">Escolha o novo horário</div><div class="sg2">${slots}</div><button class="btnpx" onclick="confRes(${b.id})">Confirmar remarcação <i class="ti ti-check"></i></button><button class="btngx" onclick="MG.date=null;renderMG()">Escolher outra data</button>`;
+  return `<div class="minfo"><div class="minfo-t" style="text-transform:capitalize">${ic('calendar')} ${dl}</div></div><div class="slbl2">Escolha o novo horário</div><div class="sg2">${slots}</div><button class="btnpx" onclick="confRes(${b.id})">Confirmar remarcação ${ic('check')}</button><button class="btngx" onclick="MG.date=null;renderMG()">Escolher outra data</button>`;
 }
 function pickRD(ds){ MG.date=ds;MG.slot=null;renderMG(); }
 function pickRS(s){ MG.slot=s;renderMG(); }
@@ -457,7 +491,7 @@ function openES(id){ const sv=V.svcs.find(x=>x.id===id);ED={mode:'edit',id:id,n:
 function closeED(){ document.getElementById('ml').innerHTML=''; }
 function renderED(){
   const ie=ED.mode==='edit',n=ie?ED.n:'',d=ie?ED.d:60,p=ie?ED.p:100,pm=ie?ED.pm:'partial';
-  document.getElementById('ml').innerHTML=`<div class="mov" onclick="if(event.target===this)closeED()"><div class="mbox"><div class="mhead"><button class="mxb" onclick="closeED()"><i class="ti ti-x"></i></button><div class="mhead-t"><i class="ti ti-${ie?'pencil':'plus'}"></i> ${ie?'Editar serviço':'Novo serviço'}</div></div><div class="mbody"><div class="fg2"><label>Nome do serviço</label><input id="edn" value="${n}" placeholder="Ex: Corte de Cabelo"/></div><div class="frow2"><div class="fg2"><label>Duração (min)</label><input id="edd" type="number" value="${d}"/></div><div class="fg2"><label>Preço (R$)</label><input id="edp" type="number" value="${p}"/></div></div><div class="fg2"><label>Pagamento antecipado</label><select id="edpm"><option value="none"${pm==='none'?' selected':''}>Sem antecipação</option><option value="partial"${pm==='partial'?' selected':''}>40% via Pix</option><option value="full"${pm==='full'?' selected':''}>100% via Pix</option></select></div>${ED.err?`<div class="errbox">${ED.err}</div>`:''}<button class="btnpx" onclick="saveED()"><i class="ti ti-device-floppy"></i> ${ie?'Salvar alterações':'Adicionar serviço'}</button><button class="btngx" onclick="closeED()">Cancelar</button></div></div></div>`;
+  document.getElementById('ml').innerHTML=`<div class="mov" onclick="if(event.target===this)closeED()"><div class="mbox"><div class="mhead"><button class="mxb" onclick="closeED()">${ic('x')}</button><div class="mhead-t">${ie?ic('pencil'):ic('plus')} ${ie?'Editar serviço':'Novo serviço'}</div></div><div class="mbody"><div class="fg2"><label>Nome do serviço</label><input id="edn" value="${n}" placeholder="Ex: Corte de Cabelo"/></div><div class="frow2"><div class="fg2"><label>Duração (min)</label><input id="edd" type="number" value="${d}"/></div><div class="fg2"><label>Preço (R$)</label><input id="edp" type="number" value="${p}"/></div></div><div class="fg2"><label>Pagamento antecipado</label><select id="edpm"><option value="none"${pm==='none'?' selected':''}>Sem antecipação</option><option value="partial"${pm==='partial'?' selected':''}>40% via Pix</option><option value="full"${pm==='full'?' selected':''}>100% via Pix</option></select></div>${ED.err?`<div class="errbox">${ED.err}</div>`:''}<button class="btnpx" onclick="saveED()">${ic('device-floppy')} ${ie?'Salvar alterações':'Adicionar serviço'}</button><button class="btngx" onclick="closeED()">Cancelar</button></div></div></div>`;
 }
 function saveED(){ const n=document.getElementById('edn').value.trim(),d=parseInt(document.getElementById('edd').value)||60,p=parseFloat(document.getElementById('edp').value)||0,pm=document.getElementById('edpm').value; if(!n){ED.err='Informe o nome.';renderED();return;} if(p<=0){ED.err='Informe um preço válido.';renderED();return;} if(ED.mode==='add'){V.svcs.push({id:V.nid++,n,d,p,pm});}else{const sv=V.svcs.find(x=>x.id===ED.id);sv.n=n;sv.d=d;sv.p=p;sv.pm=pm;} closeED();render(); }
 function delSv(id){ if(!confirm('Remover este serviço?')) return; V.svcs=V.svcs.filter(x=>x.id!==id);render(); }
