@@ -289,6 +289,18 @@ function ic(name){
 // Troque pelos valores do seu projeto (Settings > API no painel Supabase)
 const SUPABASE_URL = 'https://rlwuncnxjasklxzzytay.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsd3VuY254amFza2x4enp5dGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5NDA5NDcsImV4cCI6MjA5ODUxNjk0N30.SrFi7Gp6cpFwfrJx5CNdGIm5DCSJyq4pXRg1vZW8jFY';
+const TEST_CODE = 'AF-TESTE-30D';
+const TEST_DAYS = 30;
+let testDaysLeft = null;
+function checkTestCode(){
+  const key='af_test_activation';
+  let activated = localStorage.getItem(key);
+  if(!activated){ activated = new Date().toISOString(); localStorage.setItem(key, activated); }
+  const elapsedMs = Date.now() - new Date(activated).getTime();
+  const elapsedDays = elapsedMs / 86400000;
+  const left = Math.ceil(TEST_DAYS - elapsedDays);
+  return left;
+}
 let adminAuth=false;
 
 const V={
@@ -335,6 +347,12 @@ function focusGate(){ setTimeout(()=>{const e=document.getElementById('gi');if(e
 async function checkCode(){
   if(ED.gateBusy) return;
   const raw=document.getElementById('gi').value;
+  const rawNorm=(raw||'').replace(/[^A-Za-z0-9]/g,'').toUpperCase();
+  if(rawNorm==='AFTESTE30D'||rawNorm==='TESTE30D'){
+    const left=checkTestCode();
+    if(left<=0){ ED.gateErr='Código de teste expirado (validade de 30 dias esgotada).'; render(); focusGate(); return; }
+    testDaysLeft=left; adminAuth=true; ED.gateErr=''; render(); return;
+  }
   const code=normalizeCode(raw);
   if(!code){ ED.gateErr='Formato inválido. Use AF-XXXX-XXXX.'; render(); focusGate(); return; }
   ED.gateErr=''; ED.gateBusy=true; render();
@@ -464,7 +482,7 @@ function radmin(){
   const bkR=V.bks.length===0?'<p style="font-size:15px;color:#9AACA7">Nenhum agendamento ainda.</p>':V.bks.slice().reverse().map(b=>{const sv=V.svcs.find(x=>x.id===b.si);const p=b.dt.split('-'),dt=new Date(+p[0],+p[1]-1,+p[2]);return `<div class="aitem"><div><div class="ain">${b.nm.split(' ')[0]} <span style="font-weight:500;color:#9AACA7;font-size:14px">· ${sv?sv.n:'—'}</span></div><div class="aim">${ic('clock')} ${dt.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})} às ${b.sl} ${stBdg(b.status)} ${b.pd?'<span class="bdg bge">Pago</span>':'<span class="bdg bga">Pag. pendente</span>'}</div></div><div class="aibtns"><button class="aibb" onclick="openMG(${b.id})">${ic('settings')} Gerenciar</button></div></div>`;}).join('');
   const dT=WDS.map((w,i)=>{const on=V.workDays[i]===1;return `<button class="dwbtn" onclick="togWD(${i})" style="background:${on?'#1D9E75':'#F0F4F2'};color:${on?'#fff':'#5C6E69'};border-color:${on?'#1D9E75':'#E2E8E5'}">${w.slice(0,1)}</button>`;}).join('');
   return `<div class="page adm">
-    <div class="admtop"><div class="sessrow"><span style="color:#1D9E75">${ic('shield-check')}</span> Sessão de administrador ativa</div></div>
+    <div class="admtop"><div class="sessrow"><span style="color:#1D9E75">${ic('shield-check')}</span> Sessão de administrador ativa${testDaysLeft!==null?` <span class="bdg bga" style="margin-left:6px">Teste: ${testDaysLeft} dia(s) restante(s)</span>`:''}</div></div>
     <div class="astrow"><div class="ast"><div class="al">${ic('calendar')} Total agendados</div><div class="av">${tot}</div></div><div class="ast"><div class="al">${ic('check')} Pag. confirmados</div><div class="av">${pd}</div></div><div class="ast"><div class="al">${ic('clock')} Pag. pendentes</div><div class="av">${pend}</div></div><div class="ast"><div class="al">${ic('currency-dollar')} Recebido Pix</div><div class="av">R$ ${Math.round(rev)}</div></div></div>
     <div class="a2c"><div class="acd"><h3>Serviços cadastrados</h3><div class="acd-sub">${V.svcs.length} serviço(s) ativo(s)</div>${svR}<button class="addb" onclick="openAS()">${ic('plus')} Adicionar serviço</button></div><div class="acd"><h3>Agendamentos</h3><div class="acd-sub">${concl} concluídos · ${falt} faltas · ${canc} cancelados</div>${bkR}</div></div>
     <div class="a2c"><div class="acd"><h3>Dias de funcionamento</h3><p style="font-size:14px;color:#5C6E69;margin-bottom:14px">Clique para ativar/desativar. Afeta o calendário do cliente.</p><div style="display:flex;gap:8px;flex-wrap:wrap">${dT}</div><div class="fg2" style="margin-top:17px"><label>Abertura</label><input type="time" value="08:00"/></div><div class="fg2"><label>Fechamento</label><input type="time" value="18:00"/></div><button class="btnpx" onclick="alert('Horário salvo!')">Salvar horário</button></div><div class="acd"><h3>Dados do negócio</h3><div class="fg2"><label>Nome do negócio</label><input value="Meu Negócio"/></div><div class="fg2"><label>Chave Pix</label><input value="agenda.flow@pix.com.br"/></div><div class="fg2"><label>Intervalo entre horários</label><select><option>30 min</option><option selected>60 min</option></select></div><button class="btnpx" onclick="alert('Dados salvos!')">Salvar dados</button></div></div>
