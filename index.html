@@ -285,8 +285,10 @@ function ic(name){
 }
 
 
-const ACCESS_CODES = ['AF-28AY-V24Q','AF-2MV3-AVUP','AF-2TQW-DQCW','AF-2XB9-WM9P','AF-3L7J-B3BF','AF-3TEP-WP93','AF-3XGR-NN6J','AF-3Z66-HRQE','AF-49U3-C7FW','AF-4Q6T-AL5X','AF-5CBF-PQBN','AF-5H2N-SC5A','AF-5J7M-DS2W','AF-5MT7-RE6G','AF-5QM7-DRH7','AF-5TCA-XJSL','AF-5W76-6P8L','AF-5Y54-7DGD','AF-65AH-EKCZ','AF-6SRT-9RT6','AF-7GEP-SJYE','AF-7K5M-T875','AF-7KSJ-RS53','AF-7U59-KNUP','AF-8TUG-NUQZ','AF-8Y4X-WGLX','AF-9EDK-KVFR','AF-9QT5-9B2X','AF-9UT4-88R7','AF-A4FQ-H7HK','AF-ASMG-VNKZ','AF-BRNB-KRJ8','AF-CF4W-SPWR','AF-DAFR-L498','AF-DDWD-D8LD','AF-ECXE-RT9P','AF-EDLV-U6H7','AF-EURT-XWFJ','AF-EXA4-9G5Z','AF-F8BD-YQEC','AF-FMEE-R3HR','AF-FUQ3-RVZ8','AF-FUXF-RVQN','AF-GJSH-GKTU','AF-H4Q2-66V5','AF-HBTR-QJGF','AF-HP7S-ZLHL','AF-HTXH-U5L7','AF-J7W6-56L8','AF-J8LS-5PNV','AF-J8R8-4NGG','AF-J9GA-U886','AF-K2NJ-ET4X','AF-K5JC-VZCY','AF-KBCR-8E74','AF-KQ2K-PE44','AF-L5E2-27SA','AF-LAW9-BHZV','AF-LG2C-8QN7','AF-M4BM-X4RT','AF-M86T-M59F','AF-MVAJ-TCDU','AF-N293-RKAG','AF-NZ5E-XWHV','AF-NZ96-DPTJ','AF-P3DL-2A2S','AF-P7WX-2T4S','AF-PRGY-4KRL','AF-PXPS-9SDF','AF-QG2T-7ZLZ','AF-QHNW-HMNP','AF-R49R-896B','AF-RDRF-F9EJ','AF-RGVH-CY5Z','AF-RMEL-A468','AF-RZUL-6VAV','AF-S3JV-7WEA','AF-SMSC-G5YW','AF-SN5H-QKTK','AF-SWH3-A74D','AF-TETY-3XBH','AF-TKPX-GF2G','AF-TWRF-T6R7','AF-U69H-BRLV','AF-UCQU-U7EQ','AF-UZNE-CQUF','AF-V3T9-6FC5','AF-V4W3-UJN4','AF-VDGP-PSFL','AF-VGBV-23NE','AF-WSBF-QBTC','AF-X74D-P42B','AF-XBQQ-AEDQ','AF-XMDS-8HE3','AF-Y5XY-7TVS','AF-YPTE-LRL7','AF-YSXT-TANF','AF-YVQQ-BN3X','AF-YYSC-7H2F','AF-ZQJ9-FDHK'];
-const NORM_CODES = new Set(ACCESS_CODES.map(c=>c.replace(/-/g,'')));
+// ===== CONFIGURAÇÃO SUPABASE =====
+// Troque pelos valores do seu projeto (Settings > API no painel Supabase)
+const SUPABASE_URL = 'https://rlwuncnxjasklxzzytay.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJsd3VuY254amFza2x4enp5dGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI5NDA5NDcsImV4cCI6MjA5ODUxNjk0N30.SrFi7Gp6cpFwfrJx5CNdGIm5DCSJyq4pXRg1vZW8jFY';
 let adminAuth=false;
 
 const V={
@@ -302,7 +304,7 @@ const V={
   ]
 };
 let BK={open:false,step:1,date:null,slot:null,svcId:null,nm:'',cpf:'',wh:'',em:'',obs:'',pay:'partial',paidAmt:0,err:''};
-let ED={mode:null,id:null,err:'',gateErr:''};
+let ED={mode:null,id:null,err:'',gateErr:'',gateBusy:false};
 let MG={open:false,id:null,mode:'main',date:null,slot:null};
 
 function bksOn(dt){ return V.bks.filter(b=>b.dt===dt&&b.status!=='cancelado'); }
@@ -317,13 +319,47 @@ function rGate(){
     <div class="gate-ico">${ic('lock')}</div>
     <div class="gate-tt">Acesso restrito</div>
     <div class="gate-tx">Digite o código de liberação para acessar o painel administrativo do seu negócio.</div>
-    <input class="gate-input" id="gi" placeholder="AF-XXXX-XXXX" maxlength="20" onkeypress="if(event.key==='Enter')checkCode()"/>
+    <input class="gate-input" id="gi" placeholder="AF-XXXX-XXXX" maxlength="20" onkeypress="if(event.key==='Enter')checkCode()" ${ED.gateBusy?'disabled':''}/>
     ${ED.gateErr?`<div class="gate-err">${ED.gateErr}</div>`:''}
-    <button class="btnpx" onclick="checkCode()">${ic('shield-check')} Acessar painel</button>
-    <div class="gate-hint">${ic('info-circle')} Os códigos de liberação são pessoais e intransferíveis. Não são exibidos publicamente nesta tela.</div>
+    <button class="btnpx" onclick="checkCode()" ${ED.gateBusy?'disabled':''}>${ic('shield-check')} ${ED.gateBusy?'Verificando...':'Acessar painel'}</button>
+    <div class="gate-hint">${ic('info-circle')} Cada código de liberação só pode ser usado uma única vez. Após o uso, fica automaticamente bloqueado.</div>
   </div></div>`;
 }
-function checkCode(){ const n=document.getElementById('gi').value.replace(/[^A-Za-z0-9]/g,'').toUpperCase(); if(NORM_CODES.has(n)){adminAuth=true;ED.gateErr='';render();}else{ED.gateErr='Código inválido. Verifique e tente novamente.';render();setTimeout(()=>{const e=document.getElementById('gi');if(e)e.focus();},0);} }
+function normalizeCode(raw){
+  let s=(raw||'').replace(/[^A-Za-z0-9]/g,'').toUpperCase();
+  if(s.startsWith('AF')) s=s.slice(2);
+  if(s.length!==8) return null;
+  return 'AF-'+s.slice(0,4)+'-'+s.slice(4,8);
+}
+function focusGate(){ setTimeout(()=>{const e=document.getElementById('gi');if(e)e.focus();},0); }
+async function checkCode(){
+  if(ED.gateBusy) return;
+  const raw=document.getElementById('gi').value;
+  const code=normalizeCode(raw);
+  if(!code){ ED.gateErr='Formato inválido. Use AF-XXXX-XXXX.'; render(); focusGate(); return; }
+  ED.gateErr=''; ED.gateBusy=true; render();
+  const headers={'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json'};
+  try{
+    const getRes=await fetch(`${SUPABASE_URL}/rest/v1/codigos_acesso?codigo=eq.${encodeURIComponent(code)}&select=id,usado`,{headers});
+    if(!getRes.ok) throw new Error('fetch falhou');
+    const rows=await getRes.json();
+    if(!Array.isArray(rows)||rows.length===0){ ED.gateErr='Código inválido. Verifique e tente novamente.'; ED.gateBusy=false; render(); focusGate(); return; }
+    const row=rows[0];
+    if(row.usado){ ED.gateErr='Este código já foi utilizado.'; ED.gateBusy=false; render(); focusGate(); return; }
+    let ip=null;
+    try{ const ipRes=await fetch('https://api.ipify.org?format=json'); const ipData=await ipRes.json(); ip=ipData.ip; }catch(e){}
+    const patchRes=await fetch(`${SUPABASE_URL}/rest/v1/codigos_acesso?id=eq.${row.id}&usado=eq.false`,{
+      method:'PATCH',
+      headers:{...headers,'Prefer':'return=representation'},
+      body:JSON.stringify({usado:true,usado_em:new Date().toISOString(),usado_ip:ip})
+    });
+    const patched=await patchRes.json();
+    if(Array.isArray(patched)&&patched.length>0){ adminAuth=true; ED.gateErr=''; ED.gateBusy=false; render(); }
+    else{ ED.gateErr='Este código já foi utilizado por outra pessoa.'; ED.gateBusy=false; render(); focusGate(); }
+  }catch(e){
+    ED.gateErr='Erro de conexão. Verifique sua internet e tente novamente.'; ED.gateBusy=false; render(); focusGate();
+  }
+}
 function logoutAdmin(){ adminAuth=false; render(); }
 
 function rclient(){
