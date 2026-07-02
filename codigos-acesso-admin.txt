@@ -6,6 +6,8 @@ arquivo em local seguro — qualquer um com o código
 consegue entrar no painel.
 
 100 códigos válidos:
+
+TESTE 30 dias = AF-TESTE-30D
 ----------------------------------------------------
 AF-28AY-V24Q   AF-2MV3-AVUP   AF-2TQW-DQCW   AF-2XB9-WM9P
 AF-3L7J-B3BF   AF-3TEP-WP93   AF-3XGR-NN6J   AF-3Z66-HRQE
