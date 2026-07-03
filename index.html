@@ -303,16 +303,30 @@ function checkTestCode(){
 }
 let adminAuth=false;
 
+const STORE_KEY='agendaflow_dados';
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORE_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+function saveState(){
+  try{
+    localStorage.setItem(STORE_KEY, JSON.stringify({nid:V.nid, workDays:V.workDays, svcs:V.svcs, bks:V.bks}));
+  }catch(e){}
+}
+const SAVED = loadState();
 const V={
-  view:'client', m:T.getMonth(), y:T.getFullYear(), nid:300,
-  workDays:[0,1,1,1,1,1,1],
-  svcs:[
+  view:'client', m:T.getMonth(), y:T.getFullYear(), nid: SAVED?SAVED.nid:300,
+  workDays: SAVED?SAVED.workDays:[0,1,1,1,1,1,1],
+  svcs: SAVED?SAVED.svcs:[
     {id:1,n:'Corte de Cabelo',d:30,p:60,pm:'partial'},
     {id:2,n:'Consulta Médica',d:60,p:200,pm:'full'},
     {id:3,n:'Massagem Relaxante',d:90,p:150,pm:'partial'},
     {id:4,n:'Manicure',d:45,p:45,pm:'none'},
   ],
-  bks:[
+  bks: SAVED?SAVED.bks:[
   ]
 };
 let BK={open:false,step:1,date:null,slot:null,svcId:null,nm:'',cpf:'',wh:'',em:'',obs:'',pay:'partial',paidAmt:0,err:''};
@@ -467,7 +481,7 @@ function pixB(amt,lbl){
   const qr=`<svg width="100" height="100" viewBox="0 0 84 84" xmlns="http://www.w3.org/2000/svg"><rect width="84" height="84" fill="white" rx="4"/><rect x="2" y="2" width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2.5" rx="2"/><rect x="7" y="7" width="12" height="12" fill="#0F6E56" rx="1"/><rect x="60" y="2" width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2.5" rx="2"/><rect x="65" y="7" width="12" height="12" fill="#0F6E56" rx="1"/><rect x="2" y="60" width="22" height="22" fill="none" stroke="#0F6E56" stroke-width="2.5" rx="2"/><rect x="7" y="65" width="12" height="12" fill="#0F6E56" rx="1"/>${r}</svg>`;
   return `<div class="pixb2"><div style="font-size:14px;font-weight:700;color:#0F6E56">${ic('qrcode')} Pague via Pix</div><div class="pixqr2">${qr}</div><div class="pixamt2">R$ ${amt}</div><div class="pixlb2">${lbl}</div><div class="pixk2" onclick="cpTxt('agenda.flow@pix.com.br');alert('Chave copiada!')">${ic('copy')} agenda.flow@pix.com.br</div></div>`;
 }
-function bkPay2(amt){ BK.paidAmt=amt; V.bks.push({id:V.nid++,dt:BK.date,sl:BK.slot,nm:BK.nm,cpf:BK.cpf,ct:BK.wh,si:BK.svcId,pd:amt>0,status:'agendado'}); BK.step=5;renderBK(); }
+function bkPay2(amt){ BK.paidAmt=amt; V.bks.push({id:V.nid++,dt:BK.date,sl:BK.slot,nm:BK.nm,cpf:BK.cpf,ct:BK.wh,si:BK.svcId,pd:amt>0,status:'agendado'}); saveState(); BK.step=5;renderBK(); }
 function bkS5(dl){ const sv=V.svcs.find(x=>x.id===BK.svcId); return `<div class="cof2"><div class="cof2-ico">${ic('check')}</div><div class="cof2-tt">Agendamento confirmado!</div><div class="cof2-tx">Você receberá a confirmação pelo WhatsApp informado. Até breve!</div><div class="cof2-crd"><div class="cr2"><span>Serviço</span><b>${sv.n}</b></div><div class="cr2"><span>Data</span><b style="text-transform:capitalize">${dl}</b></div><div class="cr2"><span>Horário</span><b>${BK.slot}</b></div><div class="cr2"><span>Nome</span><b>${BK.nm}</b></div><div class="cr2"><span>CPF</span><b>${BK.cpf}</b></div><div class="cr2"><span>Pagamento</span><b>${BK.paidAmt>0?'R$ '+BK.paidAmt.toFixed(2)+' via Pix':'No dia do atendimento'}</b></div></div><button class="btnpx" onclick="closeBK();render()">Concluir</button></div>`; }
 function bkBk(s){ BK.step=s;BK.err='';renderBK(); }
 
@@ -488,7 +502,7 @@ function radmin(){
     <div class="a2c"><div class="acd"><h3>Dias de funcionamento</h3><p style="font-size:14px;color:#5C6E69;margin-bottom:14px">Clique para ativar/desativar. Afeta o calendário do cliente.</p><div style="display:flex;gap:8px;flex-wrap:wrap">${dT}</div><div class="fg2" style="margin-top:17px"><label>Abertura</label><input type="time" value="08:00"/></div><div class="fg2"><label>Fechamento</label><input type="time" value="18:00"/></div><button class="btnpx" onclick="alert('Horário salvo!')">Salvar horário</button></div><div class="acd"><h3>Dados do negócio</h3><div class="fg2"><label>Nome do negócio</label><input value="Meu Negócio"/></div><div class="fg2"><label>Chave Pix</label><input value="agenda.flow@pix.com.br"/></div><div class="fg2"><label>Intervalo entre horários</label><select><option>30 min</option><option selected>60 min</option></select></div><button class="btnpx" onclick="alert('Dados salvos!')">Salvar dados</button></div></div>
   </div>`;
 }
-function togWD(i){ V.workDays[i]=V.workDays[i]===1?0:1; render(); }
+function togWD(i){ V.workDays[i]=V.workDays[i]===1?0:1; saveState(); render(); }
 
 function openMG(id){ MG={open:true,id:id,mode:'main',date:null,slot:null}; renderMG(); }
 function closeMG(){ MG.open=false; document.getElementById('ml').innerHTML=''; }
@@ -512,8 +526,8 @@ function mgMain(b,sv){
     <button class="btngx" style="color:#A32D2D;border-color:#F09595" onclick="delBk(${b.id})">${ic('trash')} Excluir agendamento</button>
     <button class="btngx" onclick="closeMG()">Fechar</button>`;
 }
-function delBk(id){ if(!confirm('Excluir este agendamento permanentemente? Esta ação não pode ser desfeita.')) return; V.bks=V.bks.filter(x=>x.id!==id); closeMG(); render(); }
-function setSt(id,st){ const b=V.bks.find(x=>x.id===id);if(b)b.status=st; closeMG();render(); }
+function delBk(id){ if(!confirm('Excluir este agendamento permanentemente? Esta ação não pode ser desfeita.')) return; V.bks=V.bks.filter(x=>x.id!==id); saveState(); closeMG(); render(); }
+function setSt(id,st){ const b=V.bks.find(x=>x.id===id);if(b)b.status=st; saveState(); closeMG();render(); }
 function startRes(){ MG.mode='reschedule';MG.date=null;MG.slot=null;renderMG(); }
 function mgRes(b){
   if(!MG.date){
@@ -535,7 +549,7 @@ function mgRes(b){
 }
 function pickRD(ds){ MG.date=ds;MG.slot=null;renderMG(); }
 function pickRS(s){ MG.slot=s;renderMG(); }
-function confRes(id){ if(!MG.slot){alert('Selecione um horário.');return;} const b=V.bks.find(x=>x.id===id);b.dt=MG.date;b.sl=MG.slot;b.status='agendado';closeMG();render(); }
+function confRes(id){ if(!MG.slot){alert('Selecione um horário.');return;} const b=V.bks.find(x=>x.id===id);b.dt=MG.date;b.sl=MG.slot;b.status='agendado';saveState();closeMG();render(); }
 
 function openAS(){ ED={mode:'add',id:null,err:''};renderED(); }
 function openES(id){ const sv=V.svcs.find(x=>x.id===id);ED={mode:'edit',id:id,n:sv.n,d:sv.d,p:sv.p,pm:sv.pm,err:''};renderED(); }
@@ -544,8 +558,8 @@ function renderED(){
   const ie=ED.mode==='edit',n=ie?ED.n:'',d=ie?ED.d:60,p=ie?ED.p:100,pm=ie?ED.pm:'partial';
   document.getElementById('ml').innerHTML=`<div class="mov" onclick="if(event.target===this)closeED()"><div class="mbox"><div class="mhead"><button class="mxb" onclick="closeED()">${ic('x')}</button><div class="mhead-t">${ie?ic('pencil'):ic('plus')} ${ie?'Editar serviço':'Novo serviço'}</div></div><div class="mbody"><div class="fg2"><label>Nome do serviço</label><input id="edn" value="${n}" placeholder="Ex: Corte de Cabelo"/></div><div class="frow2"><div class="fg2"><label>Duração (min)</label><input id="edd" type="number" value="${d}"/></div><div class="fg2"><label>Preço (R$)</label><input id="edp" type="number" value="${p}"/></div></div><div class="fg2"><label>Pagamento antecipado</label><select id="edpm"><option value="none"${pm==='none'?' selected':''}>Sem antecipação</option><option value="partial"${pm==='partial'?' selected':''}>40% via Pix</option><option value="full"${pm==='full'?' selected':''}>100% via Pix</option></select></div>${ED.err?`<div class="errbox">${ED.err}</div>`:''}<button class="btnpx" onclick="saveED()">${ic('device-floppy')} ${ie?'Salvar alterações':'Adicionar serviço'}</button><button class="btngx" onclick="closeED()">Cancelar</button></div></div></div>`;
 }
-function saveED(){ const n=document.getElementById('edn').value.trim(),d=parseInt(document.getElementById('edd').value)||60,p=parseFloat(document.getElementById('edp').value)||0,pm=document.getElementById('edpm').value; if(!n){ED.err='Informe o nome.';renderED();return;} if(p<=0){ED.err='Informe um preço válido.';renderED();return;} if(ED.mode==='add'){V.svcs.push({id:V.nid++,n,d,p,pm});}else{const sv=V.svcs.find(x=>x.id===ED.id);sv.n=n;sv.d=d;sv.p=p;sv.pm=pm;} closeED();render(); }
-function delSv(id){ if(!confirm('Remover este serviço?')) return; V.svcs=V.svcs.filter(x=>x.id!==id);render(); }
+function saveED(){ const n=document.getElementById('edn').value.trim(),d=parseInt(document.getElementById('edd').value)||60,p=parseFloat(document.getElementById('edp').value)||0,pm=document.getElementById('edpm').value; if(!n){ED.err='Informe o nome.';renderED();return;} if(p<=0){ED.err='Informe um preço válido.';renderED();return;} if(ED.mode==='add'){V.svcs.push({id:V.nid++,n,d,p,pm});}else{const sv=V.svcs.find(x=>x.id===ED.id);sv.n=n;sv.d=d;sv.p=p;sv.pm=pm;} saveState(); closeED();render(); }
+function delSv(id){ if(!confirm('Remover este serviço?')) return; V.svcs=V.svcs.filter(x=>x.id!==id); saveState(); render(); }
 
 function cpTxt(t){ if(navigator.clipboard)navigator.clipboard.writeText(t).catch(()=>fb(t));else fb(t); }
 function fb(t){ const a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.left='-9999px';document.body.appendChild(a);a.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(a); }
